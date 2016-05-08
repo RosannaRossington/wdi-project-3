@@ -1,12 +1,32 @@
 var TemplateApp = TemplateApp || {};
 
-TemplateApp.ajaxRequest = function(method, url, data){
+TemplateApp.getToken = function(){
+  return window.localStorage.getItem("token");
+}
+
+TemplateApp.setToken = function(token){
+  return window.localStorage.setItem('token', token)
+}
+
+TemplateApp.saveTokenIfPresent = function(data){
+  if (data.token) return this.setToken(data.token)
+    return false;
+}
+
+TemplateApp.setRequestHeader = function(xhr, settings){
+  var token = TemplateApp.getToken();
+  if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
+}
+
+TemplateApp.ajaxRequest = function(method, url, data) {
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
-    data: data
+    data: data,
+    beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data)
+    console.log(data);
+    return TemplateApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
   });
@@ -16,8 +36,9 @@ TemplateApp.submitForm = function(){
   event.preventDefault();
 
   var method = $(this).attr('method');
-  var url    = $(this).attr("action")
+  var url    = $(this).attr("action");
   var data   = $(this).serialize();
+  console.log(data)
   return TemplateApp.ajaxRequest(method, url, data);
 }
 

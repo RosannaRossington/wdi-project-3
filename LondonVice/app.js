@@ -6,7 +6,7 @@ var bodyParser      = require("body-parser");
 var mongoose        = require("mongoose");
 var passport        = require("passport");
 var expressJWT      = require("express-jwt");
-var routes          = require('./config/routes');
+
 var cors            = require("cors");
 
 // Invoke express to create app 
@@ -30,6 +30,8 @@ app.use(methodOverride(function(req, res){
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(cors());
 
 app.use('/api', expressJWT({ secret: config.secret })
   .unless({
@@ -46,15 +48,15 @@ app.use(function (err, req, res, next) {
   next();
 });
 
+var routes          = require('./config/routes');
+app.use('/api', routes);
+
 //Frontend Setup
 app.use(express.static(__dirname + '/public'));
 
 app.get('*', function(req, res){
   res.sendFile(__dirname + "/public/index.html");
 });
-
-app.use('/api', routes);
-app.use(cors());
 
 app.listen(config.port, function()
   { console.log("Express is alive and kicking on port: ", config.port); }) 
