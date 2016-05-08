@@ -7,6 +7,7 @@ var mongoose        = require("mongoose");
 var passport        = require("passport");
 var expressJWT      = require("express-jwt");
 var routes          = require('./config/routes');
+var cors            = require("cors");
 
 // Invoke express to create app 
 var app             = express();
@@ -43,6 +44,13 @@ app.use(function (err, req, res, next) {
     return res.status(401).json({message: 'Unauthorized request.'});
   }
   next();
+});
+
+//Frontend Setup
+app.use(express.static(__dirname + '/public'));
+
+app.get('*', function(req, res){
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 app.use('/api', routes);
