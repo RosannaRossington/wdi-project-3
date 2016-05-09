@@ -47,20 +47,7 @@ LondonViceApp.getUsers = function(){
 }
 
 LondonViceApp.initialize = function(){
-  $("form").on("submit", this.submitForm);
-  $("#getUsers").on("click", this.getUsers);
-}
-
-// $(function(){
-//   $.ajax({
-//     type: "GET",
-//     url: "http://localhost:3000/api/crimes"
-//   }).done(function(data){
-//     console.log(data.crimes);
-//   });
-// });
-
-LondonViceApp.initialize = function(){
+  
   this.canvas = document.getElementById('map-canvas');
 
   var mapOptions = {
@@ -70,12 +57,37 @@ LondonViceApp.initialize = function(){
   };
 
   this.map = new google.maps.Map(this.canvas, mapOptions);
+  this.getCrimes();
+
+  $("form").on("submit", this.submitForm);
+  $("#getUsers").on("click", this.getUsers);
+}
+
+LondonViceApp.getCrimes = function(){
+  var self = this;
+  return $.ajax({
+    type: 'GET',
+    url: "/crimes",
+    dataType: 'json',
+  }).done(self.loopThroughCrimes);
 };
 
 
+LondonViceApp.loopThroughCrimes = function(data){
+  return $.each(data.crimes, function(i, crime){
+    LondonViceApp.createMarkerForCrime(crime);
+    console.log(crime);
+  });
+};
 
-
-
+LondonViceApp.createMarkerForCrime = function(crime) {
+  var self   = this;
+  var latlng = new google.maps.LatLng(crime.lat, crime.lng);
+  var marker = new google.maps.Marker({
+    position: latlng,
+    map: self.map,
+  });
+};
 
 
 
