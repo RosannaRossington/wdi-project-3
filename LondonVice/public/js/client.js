@@ -49,32 +49,26 @@ LondonViceApp.getUsers = function(){
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  var setIcon;
+  var setIcon 
     switch(crime.category) {
+      case "all-crime": setIcon = "images/all-crime.png"; break;
+      case "anti-social-behaviour": setIcon = ""; break;
+      case "bicycle-theft": setIcon = "images/robbery.png"; break;
       case "burglary": setIcon = "images/robbery.png"; break;
-      case "vehicle-crime": setIcon = "images/vehicle.jpg"; break;
-      case "shoplifting": setIcon = "images/theft.png"; break;
+      case "criminal-damage-arson": setIcon = "images/fire.png"; break;
+      case "drugs": setIcon = "images/drugs.png"; break;
+      case "other-theft": setIcon = "images/robbery.png"; break;
+      case "posession-of-weapons": setIcon = "images/gun.htm"; break;
+      case "public-order": setIcon = "images/robbery.png"; break;
+      case "robbery": setIcon = ""; break;
+      case "shop-lifting": setIcon = "images/robbery.png"; break;
+      case "theft-from-the-person": setIcon = "images/robbery.png"; break;
+      case "vehicle-crime": setIcon = ""; break;
+      case "violent-crime": setIcon = "images/abuse.png"; break;
+      case "other-crime": setIcon = "images/theft.png"; break;
       default: setIcon = "images/fire.png";
     }
   console.log (crime.category) 
-   // if (crime.category == "burglary") {
-   //      var marker = new google.maps.Marker({
-
-   //        position: latlng,
-   //        map: self.map,
-   //        animation: google.maps.Animation.DROP,
-   //        icon: "/images/robbery.png"
-   //      });
-   //  }
-   //  else {
-   //    var marker = new google.maps.Marker({
-
-   //      position: latlng,
-   //      map: self.map,
-   //      animation: google.maps.Animation.DROP,
-   //      icon: "/images/fire.png"
-   //    });
-   //  }
    var marker = new google.maps.Marker({
 
    position: latlng,
