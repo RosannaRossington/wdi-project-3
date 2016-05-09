@@ -1,24 +1,24 @@
-var TemplateApp = TemplateApp || {};
+var LondonViceApp = LondonViceApp || {};
 
-TemplateApp.getToken = function(){
+LondonViceApp.getToken = function(){
   return window.localStorage.getItem("token");
 }
 
-TemplateApp.setToken = function(token){
+LondonViceApp.setToken = function(token){
   return window.localStorage.setItem('token', token)
 }
 
-TemplateApp.saveTokenIfPresent = function(data){
+LondonViceApp.saveTokenIfPresent = function(data){
   if (data.token) return this.setToken(data.token)
     return false;
 }
 
-TemplateApp.setRequestHeader = function(xhr, settings){
-  var token = TemplateApp.getToken();
+LondonViceApp.setRequestHeader = function(xhr, settings){
+  var token = LondonViceApp.getToken();
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
-TemplateApp.ajaxRequest = function(method, url, data) {
+LondonViceApp.ajaxRequest = function(method, url, data) {
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
@@ -26,32 +26,32 @@ TemplateApp.ajaxRequest = function(method, url, data) {
     beforeSend: this.setRequestHeader
   }).done(function(data){
     console.log(data);
-    return TemplateApp.saveTokenIfPresent(data);
+    return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
   });
 }
 
-TemplateApp.submitForm = function(){
+LondonViceApp.submitForm = function(){
   event.preventDefault();
 
   var method = $(this).attr('method');
   var url    = $(this).attr("action");
   var data   = $(this).serialize();
   console.log(data)
-  return TemplateApp.ajaxRequest(method, url, data);
+  return LondonViceApp.ajaxRequest(method, url, data);
 }
 
-TemplateApp.getUsers = function(){
-    return TemplateApp.ajaxRequest("get", "/users");
+LondonViceApp.getUsers = function(){
+    return LondonViceApp.ajaxRequest("get", "/users");
 }
 
-TemplateApp.initialize = function(){
+LondonViceApp.initialize = function(){
   $("form").on("submit", this.submitForm);
   $("#getUsers").on("click", this.getUsers);
 }
 
 $(function(){
-  TemplateApp.initialize()  
+  LondonViceApp.initialize()  
 })
 
