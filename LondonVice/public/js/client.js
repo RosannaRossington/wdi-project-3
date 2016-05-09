@@ -51,6 +51,34 @@ LondonViceApp.initialize = function(){
   $("#getUsers").on("click", this.getUsers);
 }
 
+// $(function(){
+//   $.ajax({
+//     type: "GET",
+//     url: "http://localhost:3000/api/crimes"
+//   }).done(function(data){
+//     console.log(data.crimes);
+//   });
+// });
+
+LondonViceApp.initialize = function(){
+  this.canvas = document.getElementById('map-canvas');
+
+  var mapOptions = {
+    zoom: 12,
+    center: new google.maps.LatLng(51.506178,-0.088369),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  this.map = new google.maps.Map(this.canvas, mapOptions);
+};
+
+
+
+
+
+
+
+
 $(function(){
   LondonViceApp.initialize()  
 })

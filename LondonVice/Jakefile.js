@@ -16,6 +16,7 @@ function getCrimes(){
     data.forEach(function(crime){
       // Check whether there is a crime with that id (external_id)
 
+
       var newCrime = {
         category: crime.category,
         locationType: crime.location_type,

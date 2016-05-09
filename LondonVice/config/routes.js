@@ -4,6 +4,7 @@ var router   = express.Router();
 // ***** CONTROLLERS ***** //
 var usersController           = require('../controllers/users');
 var authenticationsController = require('../controllers/authentications');
+var crimesController          = require('../controllers/crimes');
 
 // ***** ROUTES ***** //
 router.post('/login', authenticationsController.login);
@@ -18,5 +19,7 @@ router.route('/users/:id')
   .patch(usersController.update)
   .delete(usersController.delete);
 
+router.route('/crimes')
+  .get(crimesController.index);
 
 module.exports = router;
