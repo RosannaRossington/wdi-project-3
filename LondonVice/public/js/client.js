@@ -53,6 +53,8 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   var marker = new google.maps.Marker({
     position: latlng,
     map: self.map,
+    animation: google.maps.Animation.DROP,
+    icon: "/images/robbery.png"
   });
 };
 
