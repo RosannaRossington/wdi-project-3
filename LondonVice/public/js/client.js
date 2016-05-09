@@ -1,5 +1,20 @@
 var LondonViceApp = LondonViceApp || {};
 
+// var data = [
+//   {category:'burglary'},
+//   {category:'vehicle-crime'},
+//   {category:'shoplifting'}
+// ];
+
+// function getIcon(category) {
+//   switch(category) {
+//     case "burglary": return "images/robbery.png";
+//     case "vehicle-crime": return "images/vehicle.jpg";
+//     case "shoplifting": return "images/theft.png";
+//     default: return "images/fire.png";
+//   }
+// }
+
 LondonViceApp.getToken = function(){
   return window.localStorage.getItem("token");
 }
@@ -49,13 +64,25 @@ LondonViceApp.getUsers = function(){
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self   = this;
   var latlng = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  
-  var marker = new google.maps.Marker({
-    position: latlng,
-    map: self.map,
-    animation: google.maps.Animation.DROP,
-    icon: "/images/robbery.png"
-  });
+  console.log (crime.category) 
+   if (crime.category == "burglary") {
+        var marker = new google.maps.Marker({
+
+          position: latlng,
+          map: self.map,
+          animation: google.maps.Animation.DROP,
+          icon: "/images/robbery.png"
+        });
+    }
+    else {
+      var marker = new google.maps.Marker({
+
+        position: latlng,
+        map: self.map,
+        animation: google.maps.Animation.DROP,
+        icon: "/images/fire.png"
+      });
+    }
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
