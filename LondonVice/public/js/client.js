@@ -68,6 +68,63 @@ LondonViceApp.getCrimes = function(){
     .done(self.loopThroughCrimes);;
 };
 
+LondonViceApp.getTemplate = function(tpl, data, url){
+  var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+
+  return $.ajax({
+    url: templateUrl,
+    method: "GET",
+    dataType: "html"
+  }).done(function(templateData){
+    // Use the underscore .template function to parse the template
+    var parsedTemplate   = _.template(templateData);
+    // Fills in the <%= %>, <% %> with data
+    var compiledTemplate = parsedTemplate(data);
+    // Replace the html inside main with the compiled template
+    $("main").html(compiledTemplate);
+    // Change the URL
+    console.log(url)
+    // stateObj, title, url
+    history.pushState(null, url, url)
+  })
+}
+
+LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
+  return $.ajax({
+    type: method,
+    url: "http://localhost:3000"+ url,
+    data: data,
+  }).done(function(data){
+    console.log(data);
+    if (tpl) return LondonViceApp.getTemplate(tpl, data, url);
+  }).fail(function(response){
+    LondonViceApp.getTemplate("error", null, url);
+  });
+}
+
+LondonViceApp.linkClick = function(){
+  // If it has a data attribute of external, then it's an external link
+  var external = $(this).data("external");
+  // Don't prevent the default and actually just follow the link
+  if (external) return;
+
+  // Stop the browser from following the link
+  event.preventDefault();
+  // Get the url from the link that we clicked
+  var url = $(this).attr("href");
+  // Get which template we need to render
+  var tpl = $(this).data("template");
+  // If there is an href defined on the a link, then get the data
+  if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
+  // If there isn't a href, just load the template 
+  return LondonViceApp.getTemplate(tpl, null, url);
+}
+
+LondonViceApp.bindLinkClicks = function(){
+  // Event delegation
+  $("body").on("click", "a", this.linkClick);
+}
+
 LondonViceApp.initialize = function(){
   
   this.canvas = document.getElementById('map-canvas');
@@ -82,8 +139,12 @@ LondonViceApp.initialize = function(){
   this.map = new google.maps.Map(this.canvas, mapOptions);
   this.getCrimes();
 
+  // P - bind events for header a links
+  this.bindLinkClicks();
+
   $("form").on("submit", this.submitForm);
   $("#getUsers").on("click", this.getUsers);
+
 }
 
 
