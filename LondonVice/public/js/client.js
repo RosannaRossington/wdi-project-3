@@ -46,6 +46,19 @@ LondonViceApp.getUsers = function(){
     return LondonViceApp.ajaxRequest("get", "/users");
 }
 
+LondonViceApp.addInfoWindowForCrime = function(crime, marker){
+  var self = this;
+  google.maps.event.addListener(marker, 'click', function() {
+    if (typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+crime.category+"</p>"
+    });
+    
+    self.infowindow.open(self.map, this);
+  });
+};
+
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self   = this;
   var latlng = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
@@ -54,6 +67,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
     position: latlng,
     map: self.map,
   });
+  this.addInfoWindowForCrime(crime, marker);
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
