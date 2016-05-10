@@ -49,32 +49,39 @@ LondonViceApp.getUsers = function(){
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  var setIcon 
+  var setIcon;  
     switch(crime.category) {
-      case "all-crime": setIcon = "images/all-crime.png"; break;
-      case "anti-social-behaviour": setIcon = ""; break;
-      case "bicycle-theft": setIcon = "images/robbery.png"; break;
-      case "burglary": setIcon = "images/robbery.png"; break;
-      case "criminal-damage-arson": setIcon = "images/fire.png"; break;
-      case "drugs": setIcon = "images/drugs.png"; break;
-      case "other-theft": setIcon = "images/robbery.png"; break;
-      case "posession-of-weapons": setIcon = "images/gun.htm"; break;
-      case "public-order": setIcon = "images/robbery.png"; break;
-      case "robbery": setIcon = ""; break;
-      case "shop-lifting": setIcon = "images/robbery.png"; break;
-      case "theft-from-the-person": setIcon = "images/robbery.png"; break;
-      case "vehicle-crime": setIcon = ""; break;
-      case "violent-crime": setIcon = "images/abuse.png"; break;
-      case "other-crime": setIcon = "images/theft.png"; break;
-      default: setIcon = "images/fire.png";
-    }
+          case "all-crime": setIcon = "images/all-crime.png"; break;
+          case "anti-social-behaviour": setIcon = "images/anti-social.png"; break;
+          case "bicycle-theft": setIcon = "images/bicycle-theft.png"; break;
+          case "burglary": setIcon = "images/burglary.png"; break;
+          case "criminal-damage-arson": setIcon = "images/fire.png"; break;
+          case "drugs": setIcon = "images/drugs.png"; break;
+          case "other-theft": setIcon = "images/theft.png"; break;
+          case "posession-of-weapons": setIcon = ""; break;
+          case "public-order": setIcon = ""; break;
+          case "robbery": setIcon = "images/robbery.png"; break;
+          case "shop-lifting": setIcon = ""; break;
+          case "theft-from-the-person": setIcon = ""; break;
+          case "vehicle-crime": setIcon = ""; break;
+          case "violent-crime": setIcon = ""; break;
+          case "other-crime": setIcon = "images/other-crime.png"; break;
+          default: setIcon = "images/all-crime.png";
+    };
+  var crimeIcon = { 
+    url: setIcon,
+    scaledSize: new google.maps.Size(50, 50), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+   }
+        
   console.log (crime.category) 
    var marker = new google.maps.Marker({
 
    position: latlng,
    map: self.map,
    animation: google.maps.Animation.DROP,
-   icon: setIcon
+   icon: crimeIcon
    });
 };
 
