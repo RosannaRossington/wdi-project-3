@@ -11,6 +11,7 @@ LondonViceApp.addInfoWindowForCrime = function(crime, marker){
     });
     
     self.infowindow.open(self.map, this);
+
   });
 };
 

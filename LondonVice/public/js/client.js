@@ -126,6 +126,9 @@ LondonViceApp.formSubmit = function(){
 LondonViceApp.addLinkClicks = function(){
   // Event delegation
   $("body").on("click", "a", this.linkClick);
+  $("body").on("click", ".overlap", function() {
+    $("#popup").toggleClass("offscreen") 
+  });
 }
 
 LondonViceApp.bindFormSubmits = function(){
@@ -146,8 +149,12 @@ LondonViceApp.initialize = function(){
 
 }
 
-
 $(function(){
   LondonViceApp.initialize() 
+
+  $(".overlap").click(function() {
+    $("#popup").toggleClass("offscreen");
+  });
+
 })
 
