@@ -58,18 +58,19 @@ LondonViceApp.createMarkerForCrime = function(crime) {
           case "criminal-damage-arson": setIcon = "images/fire.png"; break;
           case "drugs": setIcon = "images/drugs.png"; break;
           case "other-theft": setIcon = "images/theft.png"; break;
-          case "posession-of-weapons": setIcon = ""; break;
-          case "public-order": setIcon = ""; break;
+          case "posession-of-weapons": setIcon = "images/weapons.png"; break;
+          case "public-order": setIcon = "images/public-order.png"; break;
           case "robbery": setIcon = "images/robbery.png"; break;
-          case "shop-lifting": setIcon = ""; break;
-          case "theft-from-the-person": setIcon = ""; break;
-          case "vehicle-crime": setIcon = ""; break;
-          case "violent-crime": setIcon = ""; break;
+          case "shop-lifting": setIcon = "images/shop-lifting.png"; break;
+          case "theft-from-the-person": setIcon = "images/theft-person.png"; break;
+          case "vehicle-crime": setIcon = "images/vehicle-crime.png"; break;
+          case "violent-crime": setIcon = "images/violence.png"; break;
           case "other-crime": setIcon = "images/other-crime.png"; break;
           default: setIcon = "images/all-crime.png";
     };
   var crimeIcon = { 
     url: setIcon,
+
     scaledSize: new google.maps.Size(50, 50), // scaled size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
