@@ -40,6 +40,34 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
   });
 };
 
+LondonViceApp.createMarkerForPlace = function(place){
+
+  var self    = this;
+  var latlng = new google.maps.LatLng(51.49676350000001, 0.09280100000000857);
+    // [
+    // {lat: 51.49676350000001, lng: 0.09280100000000857},
+    // {lat: 51.4519646, lng: -0.12471099999993385},
+    // {lat: 51.4415147, lng: -0.4340750000000071},
+    // {lat: 51.5538514, lng: -0.12423079999996389},
+    // {lat: 51.4980346, lng: 0.09374030000003586},
+    // {lat: 51.5442212, lng: -0.11698330000001533},
+    // {lat: 51.49344960000001, lng: 0.08750620000000708},
+    // {lat: 51.449138, lng: -0.17466569999999138},
+    // {lat: 51.516023, lng: -0.24048259999995025}
+    // ]
+  // );
+
+  var marker = new google.maps.Marker({
+
+  position: latlng,
+  map: self.map,
+  animation: google.maps.Animation.DROP
+  });
+
+}
+
+
+
 LondonViceApp.createMarkerForCrime = function(crime) {
 
   var self    = this;
@@ -87,6 +115,7 @@ LondonViceApp.loopThroughCrimes = function(data){
   for (i = 0; i < (data.crimes).length; i++){
     var crime = data.crimes[i] 
     LondonViceApp.createMarkerForCrime(crime);
+    LondonViceApp.createMarkerForPlace();
   }
 };
 
