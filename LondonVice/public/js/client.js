@@ -25,7 +25,7 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data);
+    //console.log((data.crimes).length);
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
@@ -71,9 +71,14 @@ LondonViceApp.createMarkerForCrime = function(crime) {
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
-  return $.each(data.crimes, function(i, crime){
-    LondonViceApp.createMarkerForCrime(crime);
-  });
+  
+  for (i = 0; i < (data.crimes).length; i = i + 100){
+    var crime = data.crimes[i] 
+   LondonViceApp.createMarkerForCrime(crime);
+  }
+  // return $.each(data.crimes, function(i, crime){
+  //   LondonViceApp.createMarkerForCrime(crime);
+  // });
 };
 
 LondonViceApp.getCrimes = function(){
