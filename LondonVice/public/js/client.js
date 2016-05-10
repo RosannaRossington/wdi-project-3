@@ -14,14 +14,13 @@ LondonViceApp.setToken = function(token){
 }
 
 LondonViceApp.saveTokenIfPresent = function(data){
-  console.log("saving token")
+
   if (data.token) return this.setToken(data.token)
     return false;
 }
 
 LondonViceApp.setRequestHeader = function(xhr, settings){
   var token = LondonViceApp.getToken();
-  console.log(token);
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
@@ -69,7 +68,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     $("main").html(compiledTemplate);
     // Change the URL
     if (callback) callback();
-    console.log(url)
+    
     // stateObj, title, url
     history.pushState(null, url, url)
   })
