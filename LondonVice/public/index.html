@@ -7,6 +7,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxM36DxD-TmmCuWMML0UXBVSirOUkF42Q" charset="utf-8"></script>
   <script type="text/javascript" src="/vendor/underscore/underscore.js"></script>
   <script type="text/javascript" src="./js/client.js"></script>
+  <script type="text/javascript" src="./js/map.js"></script>
   <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
@@ -22,7 +23,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">London Vice</a>
+        <a class="navbar-brand" href="/home" data-template="home">London Vice</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -34,9 +35,9 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
+          <li><a href="/users" data-template="users/index">Users Underscore</a></li>
           <li><a href="/register" data-template="register">Register</a></li>
           <!-- <li><a href="/users" data-template="users" id="getUsers">All Users</a></li> -->
-          <li><a href="/users" data-template="users/index">Users Underscore</a></li>
           <button id="getUsers">All Users</button>
           <li><a href="/login" data-template="login">Login</a></li>
         </ul>
@@ -47,8 +48,6 @@
 
 
 <main class="container">
-  <h1>Home</h1>
-  <div id="map-canvas"></div>
   </main>
 </body>
 </html>

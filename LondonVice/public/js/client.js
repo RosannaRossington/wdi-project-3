@@ -4,17 +4,24 @@ LondonViceApp.getToken = function(){
   return window.localStorage.getItem("token");
 }
 
+LondonViceApp.checkLoggedIn = function() {
+  var token = this.getToken();
+  return token ? true : false;
+}
+
 LondonViceApp.setToken = function(token){
   return window.localStorage.setItem('token', token)
 }
 
 LondonViceApp.saveTokenIfPresent = function(data){
+  console.log("saving token")
   if (data.token) return this.setToken(data.token)
     return false;
 }
 
 LondonViceApp.setRequestHeader = function(xhr, settings){
   var token = LondonViceApp.getToken();
+  console.log(token);
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
@@ -34,7 +41,6 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
 
 LondonViceApp.submitForm = function(){
   event.preventDefault();
-
   var method = $(this).attr('method');
   var url    = $(this).attr("action");
   var data   = $(this).serialize();
@@ -46,29 +52,8 @@ LondonViceApp.getUsers = function(){
     return LondonViceApp.ajaxRequest("get", "/users");
 }
 
-LondonViceApp.createMarkerForCrime = function(crime) {
-  var self   = this;
-  var latlng = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  
-  var marker = new google.maps.Marker({
-    position: latlng,
-    map: self.map,
-  });
-};
-
-LondonViceApp.loopThroughCrimes = function(data){
-  return $.each(data.crimes, function(i, crime){
-    LondonViceApp.createMarkerForCrime(crime);
-  });
-};
-
-LondonViceApp.getCrimes = function(){
-  var self = this;
-  return LondonViceApp.ajaxRequest("get", "/crimes")
-    .done(self.loopThroughCrimes);;
-};
-
-LondonViceApp.getTemplate = function(tpl, data, url){
+LondonViceApp.getTemplate = function(tpl, data, url, callback){
+  if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register"))) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
 
   return $.ajax({
@@ -83,6 +68,7 @@ LondonViceApp.getTemplate = function(tpl, data, url){
     // Replace the html inside main with the compiled template
     $("main").html(compiledTemplate);
     // Change the URL
+    if (callback) callback();
     console.log(url)
     // stateObj, title, url
     history.pushState(null, url, url)
@@ -93,12 +79,13 @@ LondonViceApp.getTemplate = function(tpl, data, url){
 LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
   return $.ajax({
     type: method,
-    url: "http://localhost:3000"+ url,
+    url: "http://localhost:3000/api"+ url,
     data: data,
   }).done(function(data){
-    console.log(data);
-    if (tpl) return LondonViceApp.getTemplate(tpl, data, url);
+    LondonViceApp.saveTokenIfPresent(data);
+    if (tpl) return LondonViceApp.getTemplate(tpl, data, url, LondonViceApp.buildMap);
   }).fail(function(response){
+    console.log(response)
     LondonViceApp.getTemplate("error", null, url);
   });
 }
@@ -109,19 +96,31 @@ LondonViceApp.linkClick = function(){
   console.log(external)
   // Don't prevent the default and actually just follow the link
   if (external) return;
-
+  console.log(event);
   // Stop the browser from following the link
   event.preventDefault();
-  // Get the url from the link that we clicked
+ // Get the url from the link that we clicked
   var url = $(this).attr("href");
   console.log(url);
   // Get which template we need to render
   var tpl = $(this).data("template");
   console.log(tpl);
   // If there is an href defined on the a link, then get the data
-  if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
+  // if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
   // If there isn't a href, just load the template 
   return LondonViceApp.getTemplate(tpl, null, url);
+}
+
+LondonViceApp.formSubmit = function(){
+  event.preventDefault();
+  var method = $(this).attr("method");
+  var url    = $(this).attr("action");
+  // This is the template we want to go to AFTER the form submit
+  var tpl    = $(this).data("template");
+  // This gets all the data from the form, you MUST have names on the inputs
+  var data   = $(this).serialize();
+  console.log(data);
+  return LondonViceApp.apiAjaxRequest(url, method, data, "home");
 }
 
 LondonViceApp.addLinkClicks = function(){
@@ -129,33 +128,26 @@ LondonViceApp.addLinkClicks = function(){
   $("body").on("click", "a", this.linkClick);
 }
 
+LondonViceApp.bindFormSubmits = function(){
+  // Event delegation
+  $("body").on("submit", "form", this.formSubmit);
+}
+
 LondonViceApp.initialize = function(){
-
-
-  
-  this.canvas = document.getElementById('map-canvas');
-
-  var mapOptions = {
-    zoom: 12,
-    center: new google.maps.LatLng(51.506178,-0.088369),
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    styles: [{"featureType":"road","elementType":"geometry.fill","stylers":[{"lightness":-100}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"lightness":-100},{"visibility":"off"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"lightness":100}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"saturation":100},{"hue":"#006eff"},{"lightness":-19}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"saturation":-100},{"lightness":-16}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"hue":"#2bff00"},{"lightness":-39},{"saturation":8}]},{"featureType":"poi.attraction","elementType":"geometry.fill","stylers":[{"lightness":100},{"saturation":-100}]},{"featureType":"poi.business","elementType":"geometry.fill","stylers":[{"saturation":-100},{"lightness":100}]},{"featureType":"poi.government","elementType":"geometry.fill","stylers":[{"lightness":100},{"saturation":-100}]},{"featureType":"poi.medical","elementType":"geometry.fill","stylers":[{"lightness":100},{"saturation":-100}]},{"featureType":"poi.place_of_worship","elementType":"geometry.fill","stylers":[{"lightness":100},{"saturation":-100}]},{"featureType":"poi.school","elementType":"geometry.fill","stylers":[{"saturation":-100},{"lightness":100}]},{"featureType":"poi.sports_complex","elementType":"geometry.fill","stylers":[{"saturation":-100},{"lightness":100}]}]
-  };
-
-  this.map = new google.maps.Map(this.canvas, mapOptions);
-  this.getCrimes();
 
   // P - add events for header a links
   this.addLinkClicks();
 
+  this.bindFormSubmits();
 
-  $("form").on("submit", this.submitForm);
+  // $("form").on("submit", this.submitForm);
+  // $("#getUsers").on("click", this.getUsers);
   $("#getUsers").on("click", this.getUsers);
 
 }
 
 
 $(function(){
-  LondonViceApp.initialize()  
+  LondonViceApp.initialize() 
 })
 
