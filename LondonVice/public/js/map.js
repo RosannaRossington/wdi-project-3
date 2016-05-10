@@ -1,19 +1,68 @@
 //All map functions in here
 var LondonViceApp = LondonViceApp || {};
 
-LondonViceApp.createMarkerForCrime = function(crime) {
-  var self   = this;
-  var latlng = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  var marker = new google.maps.Marker({
-    position: latlng,
-    map: self.map,
+LondonViceApp.addInfoWindowForCrime = function(crime, marker){
+  var self = this;
+  google.maps.event.addListener(marker, 'click', function() {
+    if (typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+crime.category+"</p>"
+    });
+    
+    self.infowindow.open(self.map, this);
   });
 };
 
+LondonViceApp.createMarkerForCrime = function(crime) {
+
+  var self    = this;
+  var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
+  var setIcon;  
+    switch(crime.category) {
+          case "all-crime": setIcon = "images/all-crime.png"; break;
+          case "anti-social-behaviour": setIcon = "images/anti-social.png"; break;
+          case "bicycle-theft": setIcon = "images/bicycle-theft.png"; break;
+          case "burglary": setIcon = "images/burglary.png"; break;
+          case "criminal-damage-arson": setIcon = "images/fire.png"; break;
+          case "drugs": setIcon = "images/drugs.png"; break;
+          case "other-theft": setIcon = "images/theft.png"; break;
+          case "posession-of-weapons": setIcon = "images/weapons.png"; break;
+          case "public-order": setIcon = "images/public-order.png"; break;
+          case "robbery": setIcon = "images/robbery.png"; break;
+          case "shop-lifting": setIcon = "images/shop-lifting.png"; break;
+          case "theft-from-the-person": setIcon = "images/theft-person.png"; break;
+          case "vehicle-crime": setIcon = "images/vehicle-crime.png"; break;
+          case "violent-crime": setIcon = "images/violence.png"; break;
+          case "other-crime": setIcon = "images/other-crime.png"; break;
+          default: setIcon = "images/all-crime.png";
+    };
+  var crimeIcon = { 
+    url: setIcon,
+
+    scaledSize: new google.maps.Size(50, 50), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+   }
+        
+  console.log (crime.category) 
+   var marker = new google.maps.Marker({
+
+   position: latlng,
+   map: self.map,
+   animation: google.maps.Animation.DROP,
+   icon: crimeIcon
+   });
+
+  this.addInfoWindowForCrime(crime, marker);
+};
+
 LondonViceApp.loopThroughCrimes = function(data){
-  return $.each(data.crimes, function(i, crime){
-    LondonViceApp.createMarkerForCrime(crime);
-  });
+  
+  for (i = 0; i < (data.crimes).length; i = i + 100){
+    var crime = data.crimes[i] 
+   LondonViceApp.createMarkerForCrime(crime);
+  }
 };
 
 LondonViceApp.getCrimes = function(){

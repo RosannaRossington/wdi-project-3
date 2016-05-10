@@ -32,7 +32,7 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data);
+    //console.log((data.crimes).length);
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);

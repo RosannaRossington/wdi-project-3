@@ -5,7 +5,7 @@ var config   = require("./config/config");
 
 mongoose.connect(config.database)
 
-var url = "https://data.police.uk/api/crimes-street/all-crime?poly=52.268,0.543:52.794,0.238:52.130,0.478&date=2013-01"
+var url = "https://data.police.uk/api/crimes-street/all-crime?poly=51.533,0.244:51.543,0.038:51.449,0.033&date=2016-02"
 
 function getCrimes(){
   return rp(url)
