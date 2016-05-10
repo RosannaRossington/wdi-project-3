@@ -33,7 +33,6 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
   google.maps.event.addListener(marker, 'click', function() {
 
       $("#popup").removeClass("offscreen")
-      $(".inner").children().remove(); 
       $(".crimeTitle").children().remove();
       $(".streetView").children().remove();
       $(".crimeTitle").append("<h4>"+crime.category+"</h4>");
