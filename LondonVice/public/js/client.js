@@ -25,7 +25,7 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    console.log(data);
+    //console.log((data.crimes).length);
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
@@ -46,7 +46,21 @@ LondonViceApp.getUsers = function(){
     return LondonViceApp.ajaxRequest("get", "/users");
 }
 
+LondonViceApp.addInfoWindowForCrime = function(crime, marker){
+  var self = this;
+  google.maps.event.addListener(marker, 'click', function() {
+    if (typeof self.infowindow != "undefined") self.infowindow.close();
+
+    self.infowindow = new google.maps.InfoWindow({
+      content: "<p>"+crime.category+"</p>"
+    });
+    
+    self.infowindow.open(self.map, this);
+  });
+};
+
 LondonViceApp.createMarkerForCrime = function(crime) {
+
   var self    = this;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
   var setIcon;  
@@ -84,12 +98,19 @@ LondonViceApp.createMarkerForCrime = function(crime) {
    animation: google.maps.Animation.DROP,
    icon: crimeIcon
    });
+
+  this.addInfoWindowForCrime(crime, marker);
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
-  return $.each(data.crimes, function(i, crime){
-    LondonViceApp.createMarkerForCrime(crime);
-  });
+  
+  for (i = 0; i < (data.crimes).length; i = i + 100){
+    var crime = data.crimes[i] 
+   LondonViceApp.createMarkerForCrime(crime);
+  }
+  // return $.each(data.crimes, function(i, crime){
+  //   LondonViceApp.createMarkerForCrime(crime);
+  // });
 };
 
 LondonViceApp.getCrimes = function(){
