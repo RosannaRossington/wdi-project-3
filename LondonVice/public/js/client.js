@@ -32,7 +32,7 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    //console.log((data.crimes).length);
+    console.log(data);
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
@@ -126,8 +126,8 @@ LondonViceApp.formSubmit = function(){
 LondonViceApp.addLinkClicks = function(){
   // Event delegation
   $("body").on("click", "a", this.linkClick);
-  $("body").on("click", ".overlap", function() {
-    $("#popup").toggleClass("offscreen") 
+  $("body").on("click", ".closeButton", function() {
+    $("#popup").addClass("offscreen") 
   });
 }
 
@@ -150,11 +150,6 @@ LondonViceApp.initialize = function(){
 }
 
 $(function(){
-  LondonViceApp.initialize() 
-
-  $(".overlap").click(function() {
-    $("#popup").toggleClass("offscreen");
-  });
-
+  LondonViceApp.initialize()
 })
 

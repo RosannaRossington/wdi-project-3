@@ -76,3 +76,10 @@ header{
    #popup.offscreen {right: -45%;}
  }
 
+ .closeButton{
+  position: relative;
+  float: right;
+  top: 10px;
+  right: 0px;
+ }
+
