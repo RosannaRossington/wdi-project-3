@@ -14,8 +14,7 @@ LondonViceApp.setToken = function(token){
 }
 
 LondonViceApp.saveTokenIfPresent = function(data){
-  console.log("saving token")
-  if (data.token) return this.setToken(data.token)
+  if (data.token && !LondonViceApp.getToken()) return this.setToken(data.token)
     return false;
 }
 
@@ -25,7 +24,9 @@ LondonViceApp.setRequestHeader = function(xhr, settings){
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
-LondonViceApp.ajaxRequest = function(method, url, data) {
+LondonViceApp.ajaxRequest = function(method, url, data, callback) {
+  console.log(data);
+
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
@@ -33,6 +34,9 @@ LondonViceApp.ajaxRequest = function(method, url, data) {
     beforeSend: this.setRequestHeader
   }).done(function(data){
     //console.log((data.crimes).length);
+    if (typeof callback === "function") callback(data);
+    console.log(data);
+
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);

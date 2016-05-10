@@ -22,4 +22,7 @@ router.route('/users/:id')
 router.route('/crimes')
   .get(crimesController.index);
 
+  router.route('/crimesfilter')
+    .get(crimesController.filter);
+
 module.exports = router;

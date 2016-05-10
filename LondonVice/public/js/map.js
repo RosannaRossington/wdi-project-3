@@ -1,9 +1,48 @@
 //All map functions in here
 var LondonViceApp = LondonViceApp || {};
 
+LondonViceApp.map;
+LondonViceApp.categories = [];
+LondonViceApp.markers    = [];
+
+// Sets the map on all markers in the array.
+LondonViceApp.setMapOnAll = function(map) {
+  for (var i = 0; i < LondonViceApp.markers.length; i++) {
+    LondonViceApp.markers[i].setMap(LondonViceApp.map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+LondonViceApp.clearMarkers = function() {
+  console.log("CLEARING")
+  LondonViceApp.setMapOnAll(null);
+}
+
+// Shows any markers currently in the array.
+LondonViceApp.showMarkers= function() {
+  LondonViceApp.setMapOnAll(LondonViceApp.map);
+}
+
+// Deletes all markers in the array by removing references to them.
+LondonViceApp.deleteMarkers = function() {
+  LondonViceApp.clearMarkers();
+  LondonViceApp.markers = [];
+}
+
+LondonViceApp.setupFilters = function(){
+  $("input[type=checkbox]").on("change", function(){
+    LondonViceApp.deleteMarkers();
+
+    var category = $(this)[0].id;
+    LondonViceApp.ajaxRequest("get", "/crimesfilter", { category: category}, LondonViceApp.loopThroughCrimes);
+  })
+}
+
+
 LondonViceApp.addInfoWindowForCrime = function(crime, marker){
   var self = this;
   google.maps.event.addListener(marker, 'click', function() {
+    sv.getPanoramaByLocation(marker.getPosition(), 50, processSVData);
     if (typeof self.infowindow != "undefined") self.infowindow.close();
 
     self.infowindow = new google.maps.InfoWindow({
@@ -15,60 +54,64 @@ LondonViceApp.addInfoWindowForCrime = function(crime, marker){
 };
 
 LondonViceApp.createMarkerForCrime = function(crime) {
-
   var self    = this;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  var setIcon;  
-    switch(crime.category) {
-          case "all-crime": setIcon = "images/all-crime.png"; break;
-          case "anti-social-behaviour": setIcon = "images/anti-social.png"; break;
-          case "bicycle-theft": setIcon = "images/bicycle-theft.png"; break;
-          case "burglary": setIcon = "images/burglary.png"; break;
-          case "criminal-damage-arson": setIcon = "images/fire.png"; break;
-          case "drugs": setIcon = "images/drugs.png"; break;
-          case "other-theft": setIcon = "images/theft.png"; break;
-          case "posession-of-weapons": setIcon = "images/weapons.png"; break;
-          case "public-order": setIcon = "images/public-order.png"; break;
-          case "robbery": setIcon = "images/robbery.png"; break;
-          case "shop-lifting": setIcon = "images/shop-lifting.png"; break;
-          case "theft-from-the-person": setIcon = "images/theft-person.png"; break;
-          case "vehicle-crime": setIcon = "images/vehicle-crime.png"; break;
-          case "violent-crime": setIcon = "images/violence.png"; break;
-          case "other-crime": setIcon = "images/other-crime.png"; break;
-          default: setIcon = "images/all-crime.png";
-    };
+  var setIcon; 
+
+  console.log(crime.category)
+
+  switch(crime.category) {
+    case "all-crime":             setIcon = "images/all-crime.png"; break;
+    case "anti-social-behaviour": setIcon = "images/anti-social.png"; break;
+    case "bicycle-theft":         setIcon = "images/bicycle-theft.png"; break;
+    case "burglary":              setIcon = "images/burglary.png"; break;
+    case "criminal-damage-arson": setIcon = "images/fire.png"; break;
+    case "drugs":                 setIcon = "images/drugs.png"; break;
+    case "other-theft":           setIcon = "images/theft.png"; break;
+    case "posession-of-weapons":  setIcon = "images/weapons.png"; break;
+    case "public-order":          setIcon = "images/public-order.png"; break;
+    case "robbery":               setIcon = "images/robbery.png"; break;
+    case "shop-lifting":          setIcon = "images/shop-lifting.png"; break;
+    case "theft-from-the-person": setIcon = "images/theft-person.png"; break;
+    case "vehicle-crime":         setIcon = "images/vehicle-crime.png"; break;
+    case "violent-crime":         setIcon = "images/violence.png"; break;
+    case "other-crime":           setIcon = "images/other-crime.png"; break;
+    default:                      setIcon = "images/all-crime.png";
+  };
+
   var crimeIcon = { 
     url: setIcon,
-
     scaledSize: new google.maps.Size(50, 50), // scaled size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
-   }
+  }
         
-  console.log (crime.category) 
-   var marker = new google.maps.Marker({
+  var marker = new google.maps.Marker({
+    position: latlng,
+    map: self.map,
+    animation: google.maps.Animation.DROP,
+    icon: crimeIcon
+  });
 
-   position: latlng,
-   map: self.map,
-   animation: google.maps.Animation.DROP,
-   icon: crimeIcon
-   });
-
-  this.addInfoWindowForCrime(crime, marker);
+  console.log(marker);
+  self.markers.push(marker);
+  self.addInfoWindowForCrime(crime, marker);
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
-  
-  for (i = 0; i < (data.crimes).length; i = i + 100){
+  console.log("LOOPING");
+  console.log(data.crimes.length);
+
+  for (i = 0; i < data.crimes.length; i++){
     var crime = data.crimes[i] 
-   LondonViceApp.createMarkerForCrime(crime);
+    LondonViceApp.createMarkerForCrime(crime);
   }
 };
 
 LondonViceApp.getCrimes = function(){
   var self = this;
-  return LondonViceApp.ajaxRequest("get", "/crimes")
-    .done(self.loopThroughCrimes);
+  // return LondonViceApp.ajaxRequest("get", "/crimes")
+  //   .done(self.loopThroughCrimes);
 };
 
 LondonViceApp.buildMap = function() {
@@ -83,6 +126,7 @@ LondonViceApp.buildMap = function() {
 
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
   LondonViceApp.getCrimes();
+  LondonViceApp.setupFilters();
 }
 
 $(function(){
