@@ -71,8 +71,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
     anchor: new google.maps.Point(0, 0) // anchor
   }
 
-  console.log (crime.category) 
-  var marker = new google.maps.Marker({
+   var marker = new google.maps.Marker({
 
    position: latlng,
    map: self.map,
@@ -85,8 +84,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
-
-  for (i = 0; i < (data.crimes).length; i = i + 100){
+  for (i = 0; i < (data.crimes).length; i++){
     var crime = data.crimes[i] 
     LondonViceApp.createMarkerForCrime(crime);
   }
