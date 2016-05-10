@@ -1,0 +1,11 @@
+<li class="media">
+  <div class="media-left">
+    <a href="/users/<%= user._id %>" data-template="users/show">
+      <img class="media-object" src="<%= user.image %>">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading"><%= user.firstName %> <%= user.lastName %></h4>
+    <h2 class="media-heading">aka <%= user.username %></h2>
+  </div>
+</li>

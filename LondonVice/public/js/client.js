@@ -89,6 +89,7 @@ LondonViceApp.getTemplate = function(tpl, data, url){
   })
 }
 
+// P - make a request to a url and render template with data
 LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
   return $.ajax({
     type: method,
@@ -105,6 +106,7 @@ LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
 LondonViceApp.linkClick = function(){
   // If it has a data attribute of external, then it's an external link
   var external = $(this).data("external");
+  console.log(external)
   // Don't prevent the default and actually just follow the link
   if (external) return;
 
@@ -112,20 +114,24 @@ LondonViceApp.linkClick = function(){
   event.preventDefault();
   // Get the url from the link that we clicked
   var url = $(this).attr("href");
+  console.log(url);
   // Get which template we need to render
   var tpl = $(this).data("template");
+  console.log(tpl);
   // If there is an href defined on the a link, then get the data
   if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
   // If there isn't a href, just load the template 
   return LondonViceApp.getTemplate(tpl, null, url);
 }
 
-LondonViceApp.bindLinkClicks = function(){
+LondonViceApp.addLinkClicks = function(){
   // Event delegation
   $("body").on("click", "a", this.linkClick);
 }
 
 LondonViceApp.initialize = function(){
+
+
   
   this.canvas = document.getElementById('map-canvas');
 
@@ -139,8 +145,9 @@ LondonViceApp.initialize = function(){
   this.map = new google.maps.Map(this.canvas, mapOptions);
   this.getCrimes();
 
-  // P - bind events for header a links
-  this.bindLinkClicks();
+  // P - add events for header a links
+  this.addLinkClicks();
+
 
   $("form").on("submit", this.submitForm);
   $("#getUsers").on("click", this.getUsers);
