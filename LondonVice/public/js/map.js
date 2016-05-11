@@ -181,8 +181,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
 
     // draw a circle on the clicked crime?
 
-    
-
+    if (!!LondonViceApp.activeCircle) {LondonViceApp.deleteCircles();}
 
     
     var markerRadius = new google.maps.Circle({
@@ -190,13 +189,16 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       map: map,
       radius: 2000, // set radius here
       fillColor: '#FF0000',
-      fillOpacity: 0.15
+      fillOpacity: 0.15,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 0.4
     })
     
     self.activeCircle = markerRadius;
     markerRadius.bindTo('center',marker,'position');
     console.log(self.activeCircle);
-    LondonViceApp.deleteCircles();
+
   });
 };
 
