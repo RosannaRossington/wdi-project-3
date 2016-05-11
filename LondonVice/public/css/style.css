@@ -1,13 +1,26 @@
+
+@import "variables";
+=======
+/*we also need to make all font one color?*/
+
 html, body {
   margin: 0;
+  color: white;
 }
 
-header{
-<<<<<<< HEAD
-  z-index: 3;
-=======
+.navbar{
   z-index: 100;
->>>>>>> development
+  background: rgba(0,0,0,0.80);
+  border-radius: 0px;
+  border: none;
+  -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
+  -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
+  box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
+}
+
+/* P - h1s have uneven margins without this...*/
+h1 h2 h3 h4 h5 p {
+  margin: 0px 0px 5px 0px;
 }
 
 #map-canvas {
@@ -24,32 +37,21 @@ header{
    position: relative;
    z-index:2;
    background: white;
-<<<<<<< HEAD
-=======
    padding: 10px;
  }
 
- .overlap{
-   position: relative;
-   z-index:2;
-   background: white;
- }
-
-#popup {
-   position: fixed;
-   top: 50px;
-   right: 0px;
-   z-index:3;
-   background: rgba(0,0,0,0.80);
-   height: 100%;
-   max-width: 30%;
-   float: right;
-   overflow: scroll;
-   padding: 15px;
-   -webkit-transition: right 250ms ease-in-out;
-   -moz-transition: right 250ms ease-in-out;
-   transition: right 250ms ease-in-out;
- }
+#leftPanel{
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  z-index: 3;
+  background: rgba(0,0,0,0.80);
+  min-height: 50%;
+  max-width: 20%;
+  float: right;
+  overflow: scroll;
+  padding: 15px;
+}
 
 #popup.offscreen {
   right: -100%;
@@ -57,10 +59,11 @@ header{
 
 #popup {
   position: fixed;
-  z-index: 100;
+  z-index: 101;
   width: 100%;
   height: 100%;
-  top: 0px;
+  max-width: 30%;
+  top: 60px;
   right: 0;
   background: rgba(0,0,0,0.80);
   color: #fff;
@@ -94,6 +97,6 @@ header{
  .streetView{
   min-width: 200px;
   min-height: 200px;
->>>>>>> development
  }
+
 
