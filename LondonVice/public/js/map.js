@@ -210,7 +210,6 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   });
 
   self.markers.push(marker);
-  // self.addInfoWindowForCrime(crime, marker);
   this.addInfoForCrime(crime, marker);
 };
 
@@ -219,7 +218,7 @@ LondonViceApp.loopThroughCrimes = function(data){
     var crime = data[i] 
     LondonViceApp.createMarkerForCrime(crime);
   }
-    LondonViceApp.createMarkerForPlace();
+    
 };
 
 LondonViceApp.getCrimes = function(){
@@ -248,6 +247,7 @@ LondonViceApp.buildMap = function() {
 
   LondonViceApp.getCrimes();
   LondonViceApp.setupFilters();
+  LondonViceApp.createMarkerForPlace();
 }
 
 $(function(){
