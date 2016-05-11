@@ -30,6 +30,8 @@ function getCrimes(){
       var i = 0;
       data.forEach(function(crime){
         if (i % 500 === 0) {
+          console.log(crime);
+          var outcomeStatus = crime.outcome_status || "";
           var newCrime = {
             category: crime.category,
             locationType: crime.location_type,
@@ -42,10 +44,7 @@ function getCrimes(){
               longitude: crime.location.longitude
             },
             context: crime.context,
-            outcomeStatus: {
-              category: crime.outcome_status.category,
-              date: crime.outcome_status.date
-            },
+            outcomeStatus: outcomeStatus,
             persistent_id: crime.persistent_id,
             externalId: crime.id,
             location_subtype: crime.location_subtype,
@@ -53,7 +52,8 @@ function getCrimes(){
           }
 
           Crime.create(newCrime, function(err, crime) {
-            if (err) return console.log(crime);
+            if (err) return console.log(err);
+            return console.log(crime);
             //console.log("Crime was added to the database");
           })
         }
