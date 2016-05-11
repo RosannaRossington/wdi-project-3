@@ -6,6 +6,10 @@ LondonViceApp.categories = [];
 LondonViceApp.markers    = [];
 LondonViceApp.crimes     = [];
 LondonViceApp.activeCircle;
+LondonViceApp.activeCircleLat;
+LondonViceApp.activeCircleLng;
+LondonViceApp.nearbyCrimes = 0;
+
 
 // ON CLICKING A MARKER, USE GOOGLE GEOMETRIES TO RENDER DYNAMIC GRAPH
 // Add a circle with radius 1000
@@ -15,9 +19,29 @@ LondonViceApp.activeCircle;
 //   fillColor:
 // })
 
-// bindTo('center',marker, 'position') circle centre to marker 
+// bindTo('center',marker, 'position') circle centre to marker NEED THIS?
 
 // do a loop on each of the markers passing in each marker as an argument
+LondonViceApp.loopThroughMarkers = function(){
+  LondonViceApp.nearbyCrimes = 0;
+  for (i = 0; i < LondonViceApp.markers.length; i++){
+    var crime = LondonViceApp.markers[i];
+    var crimeLat = LondonViceApp.markers[0].getPosition().lat();
+    var crimeLng = LondonViceApp.markers[0].getPosition().lng();
+    LondonViceApp.findNearby(crime);
+  }
+  console.log(LondonViceApp.nearbyCrimes)
+}
+
+// this function will tell you how many are nearby but it won't tell you what category they were
+LondonViceApp.findNearby = function(crime, crimeLat, crimeLng){
+   if (google.maps.geometry.spherical.computeDistanceBetween(crime.getPosition(), LondonViceApp.activeCircle.getCenter()) <= LondonViceApp.activeCircle.getRadius()) {
+       console.log('=> is in searchArea');
+       LondonViceApp.nearbyCrimes + 1
+   } else {
+       console.log('=> is NOT in searchArea');
+   }
+ }
 
 // if the poly.containsLocation(marker.getPosition(), poly, 3?) console.log those markers as crimes?
 
@@ -50,7 +74,7 @@ LondonViceApp.removeCircle = function(circle){
 }
 
 LondonViceApp.setMapOnAllCircle = function(map){
-    LondonViceApp.activeCircle.setMap(map);
+  LondonViceApp.activeCircle.setMap(map);
 }
 
 // Removes the circle from the map, but keeps the .
@@ -181,7 +205,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
 
     // draw a circle on the clicked crime?
 
-    if (!!LondonViceApp.activeCircle) {LondonViceApp.deleteCircles();}
+    if (!!self.activeCircle) {self.deleteCircles();}
 
     
     var markerRadius = new google.maps.Circle({
@@ -195,9 +219,12 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       strokeWeight: 0.4
     })
     
-    self.activeCircle = markerRadius;
+    self.activeCircle    = markerRadius;
+    self.activeCircleLat = markerLat;
+    self.activeCircleLng = markerLng;
     markerRadius.bindTo('center',marker,'position');
     console.log(self.activeCircle);
+    console.log(self.activeCircleLat)
 
   });
 };
