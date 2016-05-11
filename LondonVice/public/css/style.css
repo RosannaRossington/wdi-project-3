@@ -1,6 +1,3 @@
-
-@import "variables";
-=======
 /*we also need to make all font one color?*/
 
 html, body {
@@ -97,6 +94,11 @@ h1 h2 h3 h4 h5 p {
  .streetView{
   min-width: 200px;
   min-height: 200px;
+ }
+
+ .show{
+  background-color: red;
+  color: red;
  }
 
 

@@ -1,5 +1,30 @@
 var LondonViceApp = LondonViceApp || {};
 
+// whenever the user clicks the logout button, run the logout function and reset the classes
+LondonViceApp.logOut = function(){
+  // reset classes of header links
+  $(".loggedOut").show();
+  $(".loggedIn").hide();
+  console.log("REMOVING TOKEN NOW>")
+  // remove token by clearing all local storage
+  return window.localStorage.removeItem("token");
+}
+
+//whenever we get a new template check there is a valid token
+LondonViceApp.headerDisplay = function(){
+  //if the user IS logged in
+  if (LondonViceApp.checkLoggedIn()) {
+    //remove log in and register links
+    $(".loggedOut").hide();
+    // and show the log out link
+    $(".loggedIn").show();
+  } else {
+    $(".loggedOut").show();
+  
+    $(".loggedIn").hide();
+  }
+}
+
 LondonViceApp.getToken = function(){
   return window.localStorage.getItem("token");
 }
@@ -14,13 +39,9 @@ LondonViceApp.setToken = function(token){
 }
 
 LondonViceApp.saveTokenIfPresent = function(data){
-
   if (data.token && !LondonViceApp.getToken()) return this.setToken(data.token)
-
-
   //if (data.token) return this.setToken(data.token)
-
-    return false;
+return false;
 }
 
 LondonViceApp.setRequestHeader = function(xhr, settings){
@@ -29,7 +50,7 @@ LondonViceApp.setRequestHeader = function(xhr, settings){
 }
 
 LondonViceApp.ajaxRequest = function(method, url, data, callback) {
- 
+
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,
@@ -60,6 +81,7 @@ LondonViceApp.getUsers = function(){
 }
 
 LondonViceApp.getTemplate = function(tpl, data, url, callback){
+  LondonViceApp.headerDisplay();
   if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register"))) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
 
@@ -80,6 +102,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     // stateObj, title, url
     history.pushState(null, url, url)
   })
+
 }
 
 // P - make a request to a url and render template with data
@@ -107,8 +130,8 @@ LondonViceApp.linkClick = function(){
   // Stop the browser from following the link
   event.preventDefault();
  // Get the url from the link that we clicked
-  var url = $(this).attr("href");
-  console.log(url);
+ var url = $(this).attr("href");
+ console.log(url);
   // Get which template we need to render
   var tpl = $(this).data("template");
   console.log(tpl);
@@ -136,6 +159,7 @@ LondonViceApp.addLinkClicks = function(){
   $("body").on("click", ".closeButton", function() {
     $("#popup").addClass("offscreen") 
   });
+  $("body").on("click", "#logOut", LondonViceApp.logOut);
 }
 
 LondonViceApp.bindFormSubmits = function(){
@@ -144,7 +168,7 @@ LondonViceApp.bindFormSubmits = function(){
 }
 
 LondonViceApp.initialize = function(){
-
+  this.headerDisplay();
   // P - add events for header a links
   this.addLinkClicks();
 
