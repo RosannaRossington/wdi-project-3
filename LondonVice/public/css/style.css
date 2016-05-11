@@ -53,15 +53,18 @@ h1 h2 h3 h4 h5 p {
   left: 10px;
   z-index: 3;
   background: #2E2E2E;
-  min-height: 50%;
-  max-width: 20%;
+  min-height: 45%;
+  max-width: 15%;
   float: right;
   overflow: scroll;
   padding: 15px;
-  color: orange;
   border: 1px solid #3C4F6F;
+  text-align: center;
 }
 
+li{
+  list-style-type: none
+}
 
 
 #popup.offscreen {
