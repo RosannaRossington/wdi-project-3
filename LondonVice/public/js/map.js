@@ -130,6 +130,8 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       $(".crimeTitle").append("<h4>"+crime.category+"</h4>");
       $(".crimeTitle").append("<h4>"+crime.location.latitude+"</h4>");
       $(".crimeTitle").append("<h4>"+crime.location.longitude+"</h4>");
+      $(".crimeTitle").append("<h4>"+crime.location.street.name+"</h4>");
+      $(".crimeTitle").append("<h4>"+crime.outcomeStatus.category+"</h4>");
       $(".streetView").append("<p>"+crime.locationType+"</p>");
 
     LondonViceApp.streetView(markerLat, markerLng)

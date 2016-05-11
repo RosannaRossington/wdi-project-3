@@ -35,8 +35,21 @@ function getCrimes(){
             locationType: crime.location_type,
             location: {
               latitude: crime.location.latitude,
+              street: {
+                id: crime.location.street.id,
+                name: crime.location.street.name
+              },
               longitude: crime.location.longitude
-            }
+            },
+            context: crime.context,
+            outcomeStatus: {
+              category: crime.outcome_status.category,
+              date: crime.outcome_status.date
+            },
+            persistent_id: crime.persistent_id,
+            externalId: crime.id,
+            location_subtype: crime.location_subtype,
+            month: crime.month
           }
 
           Crime.create(newCrime, function(err, crime) {
