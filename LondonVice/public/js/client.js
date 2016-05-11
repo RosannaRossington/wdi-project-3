@@ -14,7 +14,12 @@ LondonViceApp.setToken = function(token){
 }
 
 LondonViceApp.saveTokenIfPresent = function(data){
+
   if (data.token && !LondonViceApp.getToken()) return this.setToken(data.token)
+
+
+  //if (data.token) return this.setToken(data.token)
+
     return false;
 }
 
@@ -32,8 +37,9 @@ LondonViceApp.ajaxRequest = function(method, url, data, callback) {
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
-    //console.log((data.crimes).length);
+
     if (typeof callback === "function") callback(data);
+
 
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
@@ -71,7 +77,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     $("main").html(compiledTemplate);
     // Change the URL
     if (callback) callback();
-    console.log(url)
+    
     // stateObj, title, url
     history.pushState(null, url, url)
   })
@@ -128,6 +134,9 @@ LondonViceApp.formSubmit = function(){
 LondonViceApp.addLinkClicks = function(){
   // Event delegation
   $("body").on("click", "a", this.linkClick);
+  $("body").on("click", ".closeButton", function() {
+    $("#popup").addClass("offscreen") 
+  });
 }
 
 LondonViceApp.bindFormSubmits = function(){
@@ -148,8 +157,7 @@ LondonViceApp.initialize = function(){
 
 }
 
-
 $(function(){
-  LondonViceApp.initialize() 
+  LondonViceApp.initialize()
 })
 
