@@ -83,3 +83,8 @@ header{
   right: 0px;
  }
 
+ .streetView{
+  min-width: 200px;
+  min-height: 200px;
+ }
+

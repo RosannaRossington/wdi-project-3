@@ -1,18 +1,38 @@
 //All map functions in here
 var LondonViceApp = LondonViceApp || {};
 
+
+LondonViceApp.streetView = function (markerLat, markerLng) {
+  var markerLocation = {lat: markerLat, lng: markerLng};
+  var pano = document.getElementById('pano');
+
+  var panorama = new google.maps.StreetViewPanorama(
+      document.getElementById('pano'), {
+        position: markerLocation,
+        pov: {
+          heading: 34,
+          pitch: 10
+        }  
+      });
+
+  window.setInterval(function() {
+      var pov = panorama.getPov();
+      pov.heading += 0.2;
+      panorama.setPov(pov);
+  }, 10);
+}
+
 LondonViceApp.addInfoWindowForCrime = function(crime, marker){
   var self = this;
 
+
   google.maps.event.addListener(marker, 'click', function() {
     if (typeof self.infowindow != "undefined") self.infowindow.close();
-
     self.infowindow = new google.maps.InfoWindow({
       content: "<p>"+crime.category+"</p>"
     });
     
     self.infowindow.open(self.map, this);
-
   });
 };
 
@@ -31,12 +51,20 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
   });
 
   google.maps.event.addListener(marker, 'click', function() {
+    var markerLat = crime.location.latitude;
+    var markerLng = crime.location.longitude;
+    
 
       $("#popup").removeClass("offscreen")
       $(".crimeTitle").children().remove();
       $(".streetView").children().remove();
       $(".crimeTitle").append("<h4>"+crime.category+"</h4>");
+      $(".crimeTitle").append("<h4>"+crime.location.latitude+"</h4>");
+      $(".crimeTitle").append("<h4>"+crime.location.longitude+"</h4>");
       $(".streetView").append("<p>"+crime.locationType+"</p>");
+
+    LondonViceApp.streetView(markerLat, markerLng)
+
   });
 };
 
