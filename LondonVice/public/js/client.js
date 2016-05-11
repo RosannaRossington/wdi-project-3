@@ -29,8 +29,7 @@ LondonViceApp.setRequestHeader = function(xhr, settings){
 }
 
 LondonViceApp.ajaxRequest = function(method, url, data, callback) {
-  console.log(data);
-
+ 
   return $.ajax({
     method: method,
     url: "http://localhost:3000/api" + url,

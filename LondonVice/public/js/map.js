@@ -1,7 +1,6 @@
 //All map functions in here
 var LondonViceApp = LondonViceApp || {};
 
-
 LondonViceApp.map;
 LondonViceApp.categories = [];
 LondonViceApp.markers    = [];
@@ -31,6 +30,8 @@ LondonViceApp.deleteMarkers = function() {
 }
 
 LondonViceApp.setupFilters = function(){
+  LondonViceApp.loopThroughCrimes(LondonViceApp.crimes);
+  
   $("input[type=checkbox]").on("change", function(){
     var category = $(this)[0].id;
 
@@ -157,7 +158,7 @@ LondonViceApp.createMarkerForPlace = function(){
 
       position: latlng,
       map: self.map,
-      animation: google.maps.Animation.DROP,
+      // animation: google.maps.Animation.DROP,
       icon: { 
         url: "images/prison.jpg",
         scaledSize: new google.maps.Size(50, 50),
@@ -226,7 +227,11 @@ LondonViceApp.getCrimes = function(){
 
   return LondonViceApp.ajaxRequest("get", "/crimes", null, function(data){
     LondonViceApp.crimes = data.crimes;
+    return (function() {
+      LondonViceApp.setupFilters();
+    })();
   })
+
 
   // return LondonViceApp.ajaxRequest("get", "/crimes")
   // .done(self.loopThroughCrimes);
@@ -246,8 +251,8 @@ LondonViceApp.buildMap = function() {
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
 
   LondonViceApp.getCrimes();
-  LondonViceApp.setupFilters();
   LondonViceApp.createMarkerForPlace();
+  LondonViceApp.showMarkers();
 }
 
 $(function(){
