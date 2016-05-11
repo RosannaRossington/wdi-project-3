@@ -20,7 +20,6 @@ LondonViceApp.saveTokenIfPresent = function(data){
 
 LondonViceApp.setRequestHeader = function(xhr, settings){
   var token = LondonViceApp.getToken();
-  console.log(token);
   if (token) return xhr.setRequestHeader("Authorization", "Bearer " + token)
 }
 
@@ -35,7 +34,6 @@ LondonViceApp.ajaxRequest = function(method, url, data, callback) {
   }).done(function(data){
     //console.log((data.crimes).length);
     if (typeof callback === "function") callback(data);
-    console.log(data);
 
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
@@ -53,7 +51,7 @@ LondonViceApp.submitForm = function(){
 }
 
 LondonViceApp.getUsers = function(){
-    return LondonViceApp.ajaxRequest("get", "/users");
+  return LondonViceApp.ajaxRequest("get", "/users");
 }
 
 LondonViceApp.getTemplate = function(tpl, data, url, callback){

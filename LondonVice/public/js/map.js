@@ -4,17 +4,17 @@ var LondonViceApp = LondonViceApp || {};
 LondonViceApp.map;
 LondonViceApp.categories = [];
 LondonViceApp.markers    = [];
+LondonViceApp.crimes     = [];
 
 // Sets the map on all markers in the array.
 LondonViceApp.setMapOnAll = function(map) {
   for (var i = 0; i < LondonViceApp.markers.length; i++) {
-    LondonViceApp.markers[i].setMap(LondonViceApp.map);
+    LondonViceApp.markers[i].setMap(map);
   }
 }
 
 // Removes the markers from the map, but keeps them in the array.
 LondonViceApp.clearMarkers = function() {
-  console.log("CLEARING")
   LondonViceApp.setMapOnAll(null);
 }
 
@@ -31,13 +31,42 @@ LondonViceApp.deleteMarkers = function() {
 
 LondonViceApp.setupFilters = function(){
   $("input[type=checkbox]").on("change", function(){
+    var category = $(this)[0].id;
+
+    if ($(this)[0].checked) { 
+
+      // Ensuring that if the all-crime checkbox is clicked, then there should be no other checkboxes clicked. If the all-crime checkbox is already clicked and you click on another checkbox then the all-crime checkbox should become unchecked.
+      if (category === "all-crime") {
+        $("input[type=checkbox]:checked").not(":eq(0)").trigger("click");
+        return LondonViceApp.loopThroughCrimes(LondonViceApp.crimes)
+      } else {
+        if ($("input[type=checkbox]").first()[0].checked === true) {
+          $("input[type=checkbox]").first().trigger("click");
+        }
+      }
+
+      LondonViceApp.categories.push(category);
+    } else {
+      if (category === "all-crime") return LondonViceApp.deleteMarkers();
+
+      var index = LondonViceApp.categories.indexOf(category);
+      if (index !== -1) {
+        LondonViceApp.categories.splice(index, 1);
+      }
+    }
+
     LondonViceApp.deleteMarkers();
 
-    var category = $(this)[0].id;
-    LondonViceApp.ajaxRequest("get", "/crimesfilter", { category: category}, LondonViceApp.loopThroughCrimes);
+    var filteredCrimes = LondonViceApp.filterCrimes();
+    LondonViceApp.loopThroughCrimes(filteredCrimes);
   })
 }
 
+LondonViceApp.filterCrimes = function(){
+  return this.crimes.filter(function(crime){
+    return LondonViceApp.categories.indexOf(crime.category) !== -1;
+  })
+}
 
 LondonViceApp.addInfoWindowForCrime = function(crime, marker){
   var self = this;
@@ -57,8 +86,6 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
   var setIcon; 
-
-  console.log(crime.category)
 
   switch(crime.category) {
     case "all-crime":             setIcon = "images/all-crime.png"; break;
@@ -80,38 +107,35 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   };
 
   var crimeIcon = { 
-    url: setIcon,
+    url:        setIcon,
     scaledSize: new google.maps.Size(50, 50), // scaled size
-    origin: new google.maps.Point(0,0), // origin
-    anchor: new google.maps.Point(0, 0) // anchor
+    origin:     new google.maps.Point(0,0),   // origin
+    anchor:     new google.maps.Point(0, 0)   // anchor
   }
         
   var marker = new google.maps.Marker({
-    position: latlng,
-    map: self.map,
-    animation: google.maps.Animation.DROP,
-    icon: crimeIcon
+    position:  latlng,
+    map:       self.map,
+    // animation: google.maps.Animation.DROP,
+    icon:      crimeIcon
   });
 
-  console.log(marker);
   self.markers.push(marker);
   self.addInfoWindowForCrime(crime, marker);
 };
 
 LondonViceApp.loopThroughCrimes = function(data){
-  console.log("LOOPING");
-  console.log(data.crimes.length);
-
-  for (i = 0; i < data.crimes.length; i++){
-    var crime = data.crimes[i] 
+  for (i = 0; i < data.length; i++){
+    var crime = data[i] 
     LondonViceApp.createMarkerForCrime(crime);
   }
 };
 
 LondonViceApp.getCrimes = function(){
   var self = this;
-  // return LondonViceApp.ajaxRequest("get", "/crimes")
-  //   .done(self.loopThroughCrimes);
+  return LondonViceApp.ajaxRequest("get", "/crimes", null, function(data){
+    LondonViceApp.crimes = data.crimes;
+  })
 };
 
 LondonViceApp.buildMap = function() {
@@ -125,6 +149,7 @@ LondonViceApp.buildMap = function() {
   };
 
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
+
   LondonViceApp.getCrimes();
   LondonViceApp.setupFilters();
 }
