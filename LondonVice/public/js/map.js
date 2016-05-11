@@ -68,9 +68,43 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
   });
 };
 
+LondonViceApp.createMarkerForPlace = function(){
+
+  var self    = this;
+  var placelatlng = [
+  {lat: 51.49676350000001, lng: 0.09280100000000857},
+  {lat: 51.4519646, lng: -0.12471099999993385},
+  {lat: 51.4415147, lng: -0.4340750000000071},
+  {lat: 51.5538514, lng: -0.12423079999996389},
+  {lat: 51.4980346, lng: 0.09374030000003586},
+  {lat: 51.5442212, lng: -0.11698330000001533},
+  {lat: 51.49344960000001, lng: 0.08750620000000708},
+  {lat: 51.449138, lng: -0.17466569999999138},
+  {lat: 51.516023, lng: -0.24048259999995025}
+  ];
+
+  for (i = 0; i < placelatlng.length; i++){
+    var latlng = new google.maps.LatLng(placelatlng[i].lat, (placelatlng[i]).lng);
+    var marker = new google.maps.Marker({
+
+      position: latlng,
+      map: self.map,
+      animation: google.maps.Animation.DROP,
+      icon: { 
+        url: "images/prison.jpg",
+        scaledSize: new google.maps.Size(50, 50),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(0, 0)
+      }
+    });    
+  }
+}
+
+
 LondonViceApp.createMarkerForCrime = function(crime) {
 
   var self    = this;
+
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
   var setIcon;  
   switch(crime.category) {
@@ -116,6 +150,7 @@ LondonViceApp.loopThroughCrimes = function(data){
     var crime = data.crimes[i] 
     LondonViceApp.createMarkerForCrime(crime);
   }
+  LondonViceApp.createMarkerForPlace();
 };
 
 LondonViceApp.getCrimes = function(){
