@@ -2,41 +2,45 @@
 
 <div class="container overlap" id="leftPanel">
 
-<h1>Checkbox</h1>
-  <label><input type="checkbox" id="all-crime" checked /> All crime</label>
-  <label><input type="checkbox" id="anti-social-behaviour" />  Anti-social behaviour </label> 
-  <label><input type="checkbox" id="bicycle-theft" />  Bicycle theft</label>
-  <label><input type="checkbox" id="burglary" /> Burglary</label>
-  <label><input type="checkbox" id="criminal-damage-arson" /> Criminal damage and arson</label>
-  <label><input type="checkbox" id="drugs" /> Drugs</label>
-  <label><input type="checkbox" id="other-theft" /> Other theft</label>
-  <label><input type="checkbox" id="posession-of-weapons" /> Possession of weapons</label>
-  <label><input type="checkbox" id="public-order" /> Public order</label>
-  <label><input type="checkbox" id="robbery" /> Robbery</label>
-  <label><input type="checkbox" id="shop-lifting" /> Shoplifting</label>
-  <label><input type="checkbox" id="theft-from-the-person" /> Theft from the person</label>
-  <label><input type="checkbox" id="vehicle-crime" /> Vehicle crime</label>
-  <label><input type="checkbox" id="violent-crime" /> Violence and sexual offences</label>
-  <label><input type="checkbox" id="other-crime" /> Other crime</label>
+<h1>Crime Selector</h1>
+  <li id="all-crime"><label><input type="checkbox" id="all-crime" checked /> All crime</label></li>
+  <li id="anti-social-behaviour"><label><input type="checkbox" id="anti-social-behaviour" /> Anti-social behaviour</label></li> 
+  <li id="bicycle-theft"><label><input type="checkbox" id="bicycle-theft" /> Bicycle theft</label></li>
+  <li id="burglary"><label><input type="checkbox" id="burglary" /> Burglary</label></li>
+  <li id="criminal-damage-arson"><label><input type="checkbox" id="criminal-damage-arson" /> Arson</label></li>
+  <li id="drugs"><label><input type="checkbox" id="drugs" /> Drugs</label></li>
+  <li id="other-theft"><label><input type="checkbox" id="other-theft" /> Theft</label></li>
+  <li id="posession-of-weapons"><label><input type="checkbox" id="posession-of-weapons" /> Weapons</label></li>
+  <li id="public-order"><label><input type="checkbox" id="public-order" /> Public order</label></li>
+  <li id="robbery"><label><input type="checkbox" id="robbery" /> Robbery</label></li>
+  <li id="shop-lifting" ><label><input type="checkbox" id="shop-lifting" /> Shop-lifting</label></li>
+  <li id="theft-from-the-person" ><label><input type="checkbox" id="theft-from-the-person" /> Stealing</label></li>
+  <li id="vehicle-crime"><label><input type="checkbox" id="vehicle-crime" /> Vehicle crime</label></li>
+  <li id="violent-crime"><label><input type="checkbox" id="violent-crime" /> Violence</label></li>
+  <li id="other-crime"><label><input type="checkbox" id="other-crime" /> Other</label></li> 
 </div>
 
 </div>
 
 <div class="overlap popup offscreen" id="popup">
-  <div class="closeButton">Close</div>
-  <h1>Popup Info</h1>
+  <div class="closeButton"><img src="/images/close-button-blk.png" style="width:20px;height:20px;" id="closebtn"></div>
+  <h1>Information</h1>
   <div class="inner">
-  <h3>Crime</h3>
+  
     <div class="crimeTitle">
       
     </div>
+    <div>
     <hr>
-    <h3>Location Type</h3> 
-    <div class="locationType">
+    </div>
+    <h1>Serve Time In</h1> 
+    <div class="prisonDest">
           
     </div>
+    <div>
     <hr>
-    <h3>Street view?</h3> 
+    </div>
+    <h1>Street View</h1> 
     <div class="streetView" id="pano">   
        
     </div>

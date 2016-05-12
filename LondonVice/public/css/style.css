@@ -2,23 +2,22 @@
 
 html, body {
   margin: 0;
-  color: white;
+  color: black;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 
 .navbar{
   z-index: 100;
-  /*background: #3C4F6F;*/
-  background: black;
-  border-radius: 0px;
-  border: none;
+  background-color: white;
+  border-bottom: solid black 8px;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
 }
 
 .navbar a {
-  color: white !important;
+  color: black !important;
 }
 
 /* P - h1s have uneven margins without this...*/
@@ -43,26 +42,93 @@ h1 h2 h3 h4 h5 p {
    padding: 10px;
  }
 
- #all-crime {
-   color: red;
+ /*Checkbox*/
+
+#leftPanel,h1 {
+ color: white;
  }
+
+#all-crime {
+ color: #41942C;
+ }
+
+#anti-social-behaviour {
+   color: #8A2941
+ }
+
+#bicycle-theft {
+  color: #C04C00;
+}
+
+#burglary {
+    color: #D9C701;
+  }
+
+#criminal-damage-arson {
+    color: #C00005;
+  }
+
+#drugs {
+  color: #2C2F94;
+  }
+
+#other-theft {
+  color: #E7B102;
+  }
+
+#posession-of-weapons{
+ color: #563B67;
+ }
+
+#public-order {
+  color:#51AD59;
+}
+
+#robbery {
+  color:#E7D010;
+}
+
+#shop-lifting{
+  color:#E7D010;
+}
+
+#theft-from-the-person{ 
+  color:#E1DA02;
+}
+
+#vehicle-crime{ 
+  color:#C35B3B;
+}
+
+#violent-crime {
+  color:#51A4AD;
+}
+
+#other-crime {
+  color:#3A732E;
+}
 
 #leftPanel{
   position: fixed;
-  top: 60px;
+  top: 65px;
   left: 10px;
   z-index: 3;
-  background: #2E2E2E;
-  min-height: 50%;
-  max-width: 20%;
+  background: white;
+  border: solid black 8px;
+  min-height: 45%;
+  max-width: 17%;
   float: right;
   overflow: scroll;
   padding: 15px;
-  color: orange;
-  border: 1px solid #3C4F6F;
+  text-align: left;
+  -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
+  -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
+  box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
 }
 
-
+li{
+ list-style-type: none
+ }
 
 #popup.offscreen {
   right: -100%;
@@ -74,10 +140,11 @@ h1 h2 h3 h4 h5 p {
   width: 100%;
   height: 100%;
   max-width: 30%;
-  top: 60px;
+  top: 65px;
   right: 0;
-  background: rgba(0,0,0,0.80);
-  color: #fff;
+  background: white rgba(0,0,0,0.80);
+  border: solid black 8px;
+  color: black;
   overflow: scroll;
   padding: 15px;
   -webkit-transition: right 250ms ease-in-out;
@@ -105,6 +172,10 @@ h1 h2 h3 h4 h5 p {
   right: 0px;
  }
 
+ #closebtn:hover{
+  opacity: 0.5;
+ }
+
  .streetView{
   min-width: 200px;
   min-height: 200px;
@@ -116,3 +187,87 @@ h1 h2 h3 h4 h5 p {
   color: red;
  }
 
+ #popTitle{
+  color: #B5B5B5;
+ }
+
+ @font-face {
+     font-family: pricedownbl;
+     src: url(pricedownbl.ttf);
+ }
+
+ .navbar-brand {
+  font-family: pricedownbl;
+  font-size: 30px;
+ }
+
+ body,#forms{
+  font-size: 18px;
+  color: #610200;
+  -webkit-box-shadow: 11px 13px 44px -13px #2E2E2E;
+  -moz-box-shadow: 11px 13px 44px -13px #2E2E2E;
+  box-shadow: 11px 13px 44px -13px #2E2E2E;
+  }
+
+ .form-control{
+  width: 400px;
+  height: 50px;
+ }
+
+ form { 
+  margin: 0 auto; 
+  width: 400px;
+ }
+
+  html,.landing-page,.full {
+     background: url(http://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      background-size: cover;
+      -o-background-size: cover;
+  }
+
+  html,.landing-page {
+    background-color: white;
+    height: 100vh;
+  }
+
+
+main.container  {
+  background-color: black;
+}
+
+#forms {
+  background-color: white;
+  height: 100vh;
+}
+
+#forms form {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navbar.navbar-default {
+  margin-bottom: 0;
+}
+
+@font-face {
+  font-family: ArtelyInks;
+  src: url(ArtelyInks.ttf);
+}
+
+.h1, h1 {
+  font-size: 35px;
+  font-weight: bold;
+  color: black;
+  font-family: ArtelyInks;
+}
+
+#end {
+  width: 100%;
+}
+
+h4 {
+  font-weight: bold;
+}

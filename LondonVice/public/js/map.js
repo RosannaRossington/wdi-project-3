@@ -142,7 +142,6 @@ LondonViceApp.buildChart = function(){
 
 LondonViceApp.loopThroughFilteredCrimes = function(){
   var arrayOfCrimes = LondonViceApp.crimes;
-  console.log(arrayOfCrimes);
   for (i = 0; i < arrayOfCrimes.length; i++){
    var crime = arrayOfCrimes[i];
    var crimeLat = crime.location.latitude;
@@ -287,16 +286,36 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
     var markerLng      = crime.location.longitude;
     var center         = new google.maps.LatLng(markerLat, markerLng)
     var statusCategory = crime.outcomeStatus ? crime.outcomeStatus.category : "Status unknown";
+    var setCrimeCategory; 
+    switch(crime.category) {
+      case "all-crime":             setCrimeCategory = "All crimes"; break;
+      case "anti-social-behaviour": setCrimeCategory = "Anti Social Behaviour"; break;
+      case "bicycle-theft":         setCrimeCategory = "Bicycle Theft"; break;
+      case "burglary":              setCrimeCategory = "Burglary"; break;
+      case "criminal-damage-arson": setCrimeCategory = "Criminal Damage/Arson"; break;
+      case "drugs":                 setCrimeCategory = "Drugs"; break;
+      case "other-theft":           setCrimeCategory = "Other theft"; break;
+      case "posession-of-weapons":  setCrimeCategory = "Posession Of Weapons"; break;
+      case "public-order":          setCrimeCategory = "Public Order"; break;
+      case "robbery":               setCrimeCategory = "Robbery"; break;
+      case "shop-lifting":          setCrimeCategory = "Shoplifting"; break;
+      case "theft-from-the-person": setCrimeCategory = "Theft from the person"; break;
+      case "vehicle-crime":         setCrimeCategory = "Vehicle Crime"; break;
+      case "violent-crime":         setCrimeCategory = "Violent Crime"; break;
+      case "other-crime":           setCrimeCategory = "Other crime"; break;
+    };
 
-    $("#popup").removeClass("offscreen")
-    $(".crimeTitle").children().remove();
-    $(".streetView").children().remove();
-    $(".crimeTitle").append("<h4>"+crime.category+"</h4>");
-    $(".crimeTitle").append("<h4>"+crime.location.street.name+"</h4>");
-    $(".crimeTitle").append("<h4>"+statusCategory+"</h4>");
-    $(".streetView").append("<p>"+crime.locationType+"</p>");
+      $("#popup").removeClass("offscreen")
+      $(".crimeTitle").children().remove();
+      $(".streetView").children().remove();
+      $(".crimeTitle").append("<h4><span id='popTitle'>Crime Type: </span>"+setCrimeCategory+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Location: </span>"+crime.location.street.name+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Status: </span>"+statusCategory+"</h4>");
+    
+      $(".streetView").append("<p>"+crime.locationType+"</p>");
 
-    LondonViceApp.streetView(markerLat, markerLng)
+    LondonViceApp.streetView(markerLat, markerLng);
+    LondonViceApp.crimeOrigin = [markerLat, markerLng];
 
     // draw a circle on the clicked crime?
 
@@ -321,6 +340,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
     self.resetPie();
     self.loopThroughFilteredCrimes();
     self.buildChart();
+
   });
 };
 
@@ -329,42 +349,36 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
 LondonViceApp.createMarkerForPlace = function(){
 
   var self    = this;
-  var placelatlng = [
-  {lat: 51.49676350000001, lng: 0.09280100000000857},
-  {lat: 51.4519646,        lng: -0.12471099999993385},
-  {lat: 51.4415147,        lng: -0.4340750000000071},
-  {lat: 51.5538514,        lng: -0.12423079999996389},
-  {lat: 51.4980346,        lng: 0.09374030000003586},
-  {lat: 51.5442212,        lng: -0.11698330000001533},
-  {lat: 51.49344960000001, lng: 0.08750620000000708},
-  {lat: 51.449138,         lng: -0.17466569999999138},
-  {lat: 51.516023,         lng: -0.24048259999995025}
+  LondonViceApp.prisons = [
+    {name: "Belmarsh", lat: 51.49676350000001, lng: 0.09280100000000857},
+    {name: "Brixton", lat: 51.4519646,        lng: -0.12471099999993385},
+    {name: "Feltham", lat: 51.4415147,        lng: -0.4340750000000071},
+    {name: "Holloway", lat: 51.5538514,        lng: -0.12423079999996389},
+    {name: "Isis Thamesmead", lat: 51.4980346,        lng: 0.09374030000003586},
+    {name: "Pentonville", lat: 51.5442212,        lng: -0.11698330000001533},
+    {name: "Thameside", lat: 51.49344960000001, lng: 0.08750620000000708},
+    {name: "Wandsworth", lat: 51.449138,         lng: -0.17466569999999138},
+    {name: "Wormwood Scrubs", lat: 51.516023,         lng: -0.24048259999995025}
   ];
 
-  for (i = 0; i < placelatlng.length; i++){
-    var latlng = new google.maps.LatLng(placelatlng[i].lat, (placelatlng[i]).lng);
+  for (i = 0; i < LondonViceApp.prisons.length; i++){
+    var latlng = new google.maps.LatLng(LondonViceApp.prisons[i].lat, (LondonViceApp.prisons[i]).lng);
     var marker = new google.maps.Marker({
 
       position: latlng,
       map: self.map,
-      // animation: google.maps.Animation.DROP,
       icon: { 
         url: "images/prison.png",
-        // scaledSize: new google.maps.Size(50, 50),
-        // origin: new google.maps.Point(0,0),
-        // anchor: new google.maps.Point(0, 0)
       }
     });    
   }
 }
-
 
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
   var lat     = crime.location.latitude;
   var lng     = crime.location.longitude;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-
   var setIcon; 
   switch(crime.category) {
     case "all-crime":             setIcon = "images/all-crime.png"; break;
@@ -387,10 +401,6 @@ LondonViceApp.createMarkerForCrime = function(crime) {
 
   var crimeIcon = { 
     url:        setIcon,
-
-    // scaledSize: new google.maps.Size(0, 50),   // scaled size
-    // origin:     new google.maps.Point(0, 0),   // origin
-    // anchor:     new google.maps.Point(0, 0)   // anchor
   }
 
   var marker = new google.maps.Marker({
@@ -423,41 +433,70 @@ LondonViceApp.getCrimes = function(){
       LondonViceApp.setupFilters();
     })();
   })
-
-
-  // return LondonViceApp.ajaxRequest("get", "/crimes")
-  // .done(self.loopThroughCrimes);
-
 };
 
 LondonViceApp.buildMap = function() {
   this.canvas = document.getElementById('map-canvas');
-
   var mapOptions = {
     zoom: 12,
     center: new google.maps.LatLng(51.506178,-0.088369),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    styles: [{"featureType":"all","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.highway","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#e2403d"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#242f42"},{"lightness":17}]}],
-
-    //styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
+    styles:[{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#71ABC3"},{"saturation":-10},{"lightness":-21},{"visibility":"simplified"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"hue":"#7DC45C"},{"saturation":37},{"lightness":-41},{"visibility":"simplified"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#C3E0B0"},{"saturation":23},{"lightness":-12},{"visibility":"simplified"}]},{"featureType":"poi","elementType":"all","stylers":[{"hue":"#A19FA0"},{"saturation":-98},{"lightness":-20},{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"hue":"#FFFFFF"},{"saturation":-100},{"lightness":100},{"visibility":"simplified"}]}],  
     streetViewControl: false
   };
 
-
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
-
+  LondonViceApp.directionsService = new google.maps.DirectionsService;
+  LondonViceApp.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
   LondonViceApp.getCrimes();
   LondonViceApp.createMarkerForPlace();
+  LondonViceApp.populatePrisonSelect();
   LondonViceApp.showMarkers();
-  // P - to get all the grimes in London, need to define circle - passing in lat and lng (center of the map) and run readCrimes function on these
-  // LondonViceApp.initializeCircle(lat,lng);
+}
+
+LondonViceApp.onChangeHandler = function() {
+  var directionsService = LondonViceApp.directionsService;
+  var directionsDisplay = LondonViceApp.directionsDisplay;
+  LondonViceApp.calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+LondonViceApp.populatePrisonSelect = function() {
+  $(".prisonDest").append("<select class='form-control' id='end'></select>");
+  $.each(LondonViceApp.prisons, function(index, prison) {
+    $("select#end").append("<option value='"+index+"'>"+prison.name+"</option>");
+  })
+  document.getElementById('end').addEventListener('change', LondonViceApp.onChangeHandler);
+}
+
+LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
+
+  var optionLatLng = document.getElementById("end").value;
+  var prison = LondonViceApp.prisons[optionLatLng];
+  var origin = new google.maps.LatLng(LondonViceApp.crimeOrigin[0], LondonViceApp.crimeOrigin[1]);
+  var destination = new google.maps.LatLng(prison.lat, prison.lng);
+  
+  directionsService.route({
+    origin: origin,
+    destination: destination,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setMap(LondonViceApp.map);
+      directionsDisplay.setOptions({
+        polylineOptions: {
+          strokeColor: 'red'
+        }
+      });
+      directionsDisplay.setDirections(response);
+    } else {
+      console.log('Directions request failed due to ' + status);
+    }
+  });
 }
 
 $(function(){
   if (LondonViceApp.checkLoggedIn()) {
     LondonViceApp.getTemplate("home", null, "home", LondonViceApp.buildMap);
   }
-
 });
-
 

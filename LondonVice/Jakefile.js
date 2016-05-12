@@ -55,7 +55,6 @@ function getCrimes(){
         }
         i++;
       })
-      console.log("Data added!")
     })
     .catch(function(err) {
       console.log("Something went wrong...", err)
