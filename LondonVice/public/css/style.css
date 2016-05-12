@@ -105,6 +105,10 @@ h1 h2 h3 h4 h5 p {
   right: 0px;
  }
 
+ #closebtn:hover{
+  opacity: 0.5;
+ }
+
  .streetView{
   min-width: 200px;
   min-height: 200px;
