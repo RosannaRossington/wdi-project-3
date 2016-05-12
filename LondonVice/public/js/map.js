@@ -132,8 +132,8 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
  
       $(".streetView").append("<p>"+crime.locationType+"</p>");
 
-    LondonViceApp.streetView(markerLat, markerLng)
-
+    LondonViceApp.streetView(markerLat, markerLng);
+    LondonViceApp.crimeOrigin = [markerLat, markerLng];
   });
 };
 
@@ -230,11 +230,6 @@ LondonViceApp.getCrimes = function(){
       LondonViceApp.setupFilters();
     })();
   })
-
-
-  // return LondonViceApp.ajaxRequest("get", "/crimes")
-  // .done(self.loopThroughCrimes);
-
 };
 
 LondonViceApp.buildMap = function() {
@@ -247,10 +242,9 @@ LondonViceApp.buildMap = function() {
     streetViewControl: false
     };
 
-  // document.getElementById('start').addEventListener('change', onChangeHandler)
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
   LondonViceApp.directionsService = new google.maps.DirectionsService;
-  LondonViceApp.directionsDisplay = new google.maps.DirectionsRenderer;
+  LondonViceApp.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
   LondonViceApp.getCrimes();
   LondonViceApp.createMarkerForPlace();
   LondonViceApp.populatePrisonSelect();
@@ -266,21 +260,19 @@ LondonViceApp.onChangeHandler = function() {
 LondonViceApp.populatePrisonSelect = function() {
   $(".prisonDest").append("<select id='end'></select>");
   $.each(LondonViceApp.prisons, function(index, prison) {
-    console.log(prison);
     $("select#end").append("<option value='"+index+"'>"+prison.name+"</option>");
   })
   document.getElementById('end').addEventListener('change', LondonViceApp.onChangeHandler);
 }
 
 
-
-
 LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
 
   var optionLatLng = document.getElementById("end").value;
   var prison = LondonViceApp.prisons[optionLatLng];
-  var origin = new google.maps.LatLng(51.516023, -0.24048259999995025);
+  var origin = new google.maps.LatLng(LondonViceApp.crimeOrigin[0], LondonViceApp.crimeOrigin[1]);
   var destination = new google.maps.LatLng(prison.lat, prison.lng);
+  
   directionsService.route({
     origin: origin,
     destination: destination,
@@ -289,7 +281,6 @@ LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsD
     if (status === google.maps.DirectionsStatus.OK) {
       directionsDisplay.setMap(LondonViceApp.map);
       directionsDisplay.setDirections(response);
-      console.log(response)
     } else {
       console.log('Directions request failed due to ' + status);
     }
