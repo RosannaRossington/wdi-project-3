@@ -140,20 +140,20 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
 LondonViceApp.createMarkerForPlace = function(){
 
   var self    = this;
-  var placelatlng = [
-  {lat: 51.49676350000001, lng: 0.09280100000000857},
-  {lat: 51.4519646,        lng: -0.12471099999993385},
-  {lat: 51.4415147,        lng: -0.4340750000000071},
-  {lat: 51.5538514,        lng: -0.12423079999996389},
-  {lat: 51.4980346,        lng: 0.09374030000003586},
-  {lat: 51.5442212,        lng: -0.11698330000001533},
-  {lat: 51.49344960000001, lng: 0.08750620000000708},
-  {lat: 51.449138,         lng: -0.17466569999999138},
-  {lat: 51.516023,         lng: -0.24048259999995025}
+  LondonViceApp.prisons = [
+    {name: "Belmarsh", lat: 51.49676350000001, lng: 0.09280100000000857},
+    {name: "Brixton", lat: 51.4519646,        lng: -0.12471099999993385},
+    {name: "Feltham", lat: 51.4415147,        lng: -0.4340750000000071},
+    {name: "Holloway", lat: 51.5538514,        lng: -0.12423079999996389},
+    {name: "Isis Thamesmead", lat: 51.4980346,        lng: 0.09374030000003586},
+    {name: "Pentonville", lat: 51.5442212,        lng: -0.11698330000001533},
+    {name: "Thameside", lat: 51.49344960000001, lng: 0.08750620000000708},
+    {name: "Wandsworth", lat: 51.449138,         lng: -0.17466569999999138},
+    {name: "Wormwood Scrubs", lat: 51.516023,         lng: -0.24048259999995025}
   ];
 
-  for (i = 0; i < placelatlng.length; i++){
-    var latlng = new google.maps.LatLng(placelatlng[i].lat, (placelatlng[i]).lng);
+  for (i = 0; i < LondonViceApp.prisons.length; i++){
+    var latlng = new google.maps.LatLng(LondonViceApp.prisons[i].lat, (LondonViceApp.prisons[i]).lng);
     var marker = new google.maps.Marker({
 
       position: latlng,
@@ -239,44 +239,48 @@ LondonViceApp.getCrimes = function(){
 
 LondonViceApp.buildMap = function() {
   this.canvas = document.getElementById('map-canvas');
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;
-
   var mapOptions = {
     zoom: 12,
     center: new google.maps.LatLng(51.506178,-0.088369),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: [{"featureType":"all","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.highway","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#e2403d"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#242f42"},{"lightness":17}]}],
-      
-    //styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#e9e9e9"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#dedede"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]}]
     streetViewControl: false
     };
- 
 
-  $(".prisonDest").append("<select id='end'><option value='new google.maps.LatLng(51.49676350000001,0.09280100000000857)'>"+"Belmarsh"+"</option><option value='lat: (51.4519646, lng: -0.12471099999993385)'>"+"Brixton"+"</option><option value='feltham'>"+"Feltham"+"</option><option value='holloway'>"+"Holloway"+"</option><option value='isis'>"+"Isis Thamesmead"+"</option><option value='pentonville'>"+"Pentonville"+"</option><option value='thameside'>"+"Thameside"+"</option><option value='wandsworth'>"+"Wandsworth"+"</option><option value='winona, az'>"+"Wormwood Scrubs"+"</option></select>");
-
-    var onChangeHandler = function() {
-    LondonViceApp.calculateAndDisplayRoute(directionsService, directionsDisplay);
-    };
-  // document.getElementById('start').addEventListener('change', onChangeHandler);
-  document.getElementById('end').addEventListener('change', onChangeHandler);
-
+  // document.getElementById('start').addEventListener('change', onChangeHandler)
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
-
+  LondonViceApp.directionsService = new google.maps.DirectionsService;
+  LondonViceApp.directionsDisplay = new google.maps.DirectionsRenderer;
   LondonViceApp.getCrimes();
   LondonViceApp.createMarkerForPlace();
+  LondonViceApp.populatePrisonSelect();
   LondonViceApp.showMarkers();
-
 }
+
+LondonViceApp.onChangeHandler = function() {
+  var directionsService = LondonViceApp.directionsService;
+  var directionsDisplay = LondonViceApp.directionsDisplay;
+  LondonViceApp.calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+LondonViceApp.populatePrisonSelect = function() {
+  $(".prisonDest").append("<select id='end'></select>");
+  $.each(LondonViceApp.prisons, function(index, prison) {
+    console.log(prison);
+    $("select#end").append("<option value='"+index+"'>"+prison.name+"</option>");
+  })
+  document.getElementById('end').addEventListener('change', LondonViceApp.onChangeHandler);
+}
+
+
+
 
 LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
 
+  var optionLatLng = document.getElementById("end").value;
+  var prison = LondonViceApp.prisons[optionLatLng];
   var origin = new google.maps.LatLng(51.516023, -0.24048259999995025);
-  var destination = new google.maps.LatLng(51.4519646, -0.12471099999993385);
-
-  console.log(origin);
-  console.log(destination);
-
+  var destination = new google.maps.LatLng(prison.lat, prison.lng);
   directionsService.route({
     origin: origin,
     destination: destination,
