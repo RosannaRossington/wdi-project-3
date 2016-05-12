@@ -464,10 +464,13 @@ LondonViceApp.onChangeHandler = function() {
 }
 
 LondonViceApp.populatePrisonSelect = function() {
-  $(".prisonDest").append("<select class='form-control' id='end'></select>");
+  var options = "<select id='end'>";
   $.each(LondonViceApp.prisons, function(index, prison) {
-    $("select#end").append("<option value='"+index+"'>"+prison.name+"</option>");
+    options += "<option value='"+index+"'>"+prison.name+"</option>";
   })
+  options += "</select>";
+
+  $(".prisonDest").append(options)
   document.getElementById('end').addEventListener('change', LondonViceApp.onChangeHandler);
 }
 
