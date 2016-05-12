@@ -4,6 +4,7 @@ html, body {
   margin: 0;
   color: black;
   font-family: 'Roboto Condensed', sans-serif;
+
 }
 
 
@@ -219,27 +220,15 @@ li{
   width: 400px;
  }
 
-  html,.landing-page,.full {
-     background: url(http://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png) no-repeat center center fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      background-size: cover;
-      -o-background-size: cover;
-  }
-
-  html,.landing-page {
-    background-color: white;
-    height: 100vh;
-  }
-
-
-main.container  {
+/*main.container  {
   background-color: black;
-}
+}*/
 
 #forms {
   background-color: white;
   height: 100vh;
+  border-left: solid black 8px;
+  border-right: solid black 8px;
 }
 
 #forms form {
@@ -264,6 +253,7 @@ main.container  {
   font-family: ArtelyInks;
 }
 
+
 #end {
   width: 100%;
 }
@@ -271,3 +261,23 @@ main.container  {
 h4 {
   font-weight: bold;
 }
+
+#fullHeight {
+  height: 100vh;
+  width: 500px;
+  
+}
+
+ #welcome {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background-color: white;
+  border: solid black 8px;
+  position: relative;
+
+ 
+  padding: 10px;
+ }
+
