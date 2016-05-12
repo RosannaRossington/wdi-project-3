@@ -130,6 +130,8 @@ li{
  list-style-type: none
  }
 
+
+
 /*.h1, h1 {
   font-size: 22px;
   color: black;
@@ -246,13 +248,13 @@ main.container  {
 }
 
 @font-face {
-  font-family: AlexBrush-Regular;
-  src: url(AlexBrush-Regular.ttf);
+  font-family: ArtelyInks;
+  src: url(ArtelyInks.ttf);
 }
 
 .h1, h1 {
   font-size: 35px;
   font-weight: bold;
   color: black;
-  font-family: AlexBrush-Regular;
+  font-family: ArtelyInks;
 }

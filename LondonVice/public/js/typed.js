@@ -1,3 +1,11 @@
+<script>
+    $(function(){
+        $("#typed").typed({
+            stringsElement: $('#typed-strings')
+        });
+    });
+</script>
+
 setTimeout(function(){
         $(".element0").typed({
             strings: ["How are you?"],
