@@ -2,24 +2,22 @@
 
 html, body {
   margin: 0;
-  color: white;
+  color: black;
   font-family: 'Roboto Condensed', sans-serif;
 }
 
 
 .navbar{
   z-index: 100;
-  background-color: #443838;
-  border-radius: 0px;
-  border: none;
+  background-color: white;
+  border-bottom: solid black 8px;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
 }
 
 .navbar a {
-  color: white !important;
-  :pointer;
+  color: black !important;
 }
 
 /* P - h1s have uneven margins without this...*/
@@ -112,16 +110,16 @@ h1 h2 h3 h4 h5 p {
 
 #leftPanel{
   position: fixed;
-  top: 60px;
+  top: 65px;
   left: 10px;
   z-index: 3;
-  background: #443838;
+  background: white;
+  border: solid black 8px;
   min-height: 45%;
-  max-width: 15%;
+  max-width: 17%;
   float: right;
   overflow: scroll;
   padding: 15px;
- /* border: 1px solid #3C4F6F;*/
   text-align: left;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
@@ -132,9 +130,11 @@ li{
  list-style-type: none
  }
 
-.h1, h1 {
+/*.h1, h1 {
   font-size: 22px;
-}
+  color: black;
+  font-family: AlexBrush-Regular;
+}*/
 
 #popup.offscreen {
   right: -100%;
@@ -207,18 +207,17 @@ li{
   width: 400px;
  }
 
- /* html,.landing-page,.full {
-  /*    background: url('https://wallpaperscraft.com/image/london_england_uk_tower_bridge_thames_58120_1920x1080.jpg') no-repeat center center fixed;
-     https://i.ytimg.com/vi/EehTldZe-Cs/maxresdefault.jpg*/
-    /* background: url(http://wallsquare.com/wp-content/uploads/2016/03/cities-cars-deviantart-city-lights-artwork-photo-manipulation-night-shot-picture-gallery.jpg) no-repeat center center fixed;
+  html,.landing-page,.full {
+     background: url(http://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       background-size: cover;
-      -o-background-size: cover;*/
-  /*}*/
+      -o-background-size: cover;
+  }
 
-  html,.landing-page, {
+  html,.landing-page {
     background-color: white;
+    height: 100vh;
   }
 
 /*body {
@@ -226,12 +225,12 @@ li{
   height: 100vh;
 }*/
 
-main.container {
-  background-color: red;
+main.container  {
+  background-color: black;
 }
 
 #forms {
-  background-color: red;
+  background-color: white;
   height: 100vh;
 }
 
@@ -245,5 +244,14 @@ main.container {
   margin-bottom: 0;
 }
 
+@font-face {
+  font-family: AlexBrush-Regular;
+  src: url(AlexBrush-Regular.ttf);
+}
 
-
+.h1, h1 {
+  font-size: 35px;
+  font-weight: bold;
+  color: black;
+  font-family: AlexBrush-Regular;
+}
