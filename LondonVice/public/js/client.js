@@ -27,7 +27,7 @@ LondonViceApp.headerDisplay = function(){
 
 LondonViceApp.backToStreetsDisplay = function(tpl){
   console.log(tpl)
-  if (tpl == "landing") {
+  if (tpl == "landing" && (LondonViceApp.checkLoggedIn())) {
     //remove log in and register links
     $("#homeLink").show();
   } else {
@@ -92,11 +92,11 @@ LondonViceApp.getUsers = function(){
 LondonViceApp.getTemplate = function(tpl, data, url, callback){
   console.log(tpl)
   LondonViceApp.headerDisplay();
-  LondonViceApp.backToStreetsDisplay(tpl); 
- 
-  if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
+  LondonViceApp.backToStreetsDisplay(tpl);
+  
   if (LondonViceApp.checkLoggedIn() && (tpl == "home")) tpl = "home";
 
+  if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
 
   return $.ajax({
