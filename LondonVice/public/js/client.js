@@ -25,6 +25,16 @@ LondonViceApp.headerDisplay = function(){
   }
 }
 
+LondonViceApp.backToStreetsDisplay = function(tpl){
+  console.log(tpl)
+  if (tpl == "landing") {
+    //remove log in and register links
+    $("#homeLink").show();
+  } else {
+    $("#homeLink").hide();
+  }
+}
+
 LondonViceApp.getToken = function(){
   return window.localStorage.getItem("token");
 }
@@ -60,7 +70,6 @@ LondonViceApp.ajaxRequest = function(method, url, data, callback) {
 
     if (typeof callback === "function") callback(data);
 
-
     return LondonViceApp.saveTokenIfPresent(data);
   }).fail(function(data){
     console.log(data.responseJSON.message);
@@ -81,8 +90,12 @@ LondonViceApp.getUsers = function(){
 }
 
 LondonViceApp.getTemplate = function(tpl, data, url, callback){
+  console.log(tpl)
   LondonViceApp.headerDisplay();
+  LondonViceApp.backToStreetsDisplay(tpl);
+  
   if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register"))) tpl = "home";
+  if (LondonViceApp.checkLoggedIn() && (tpl == "home")) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
 
   return $.ajax({
@@ -102,7 +115,6 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     // stateObj, title, url
     history.pushState(null, url, url)
   })
-
 }
 
 // P - make a request to a url and render template with data
@@ -123,10 +135,9 @@ LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
 LondonViceApp.linkClick = function(){
   // If it has a data attribute of external, then it's an external link
   var external = $(this).data("external");
-  console.log(external)
   // Don't prevent the default and actually just follow the link
   if (external) return;
-  console.log(event);
+  console.log(this);
   // Stop the browser from following the link
   event.preventDefault();
  // Get the url from the link that we clicked
@@ -134,6 +145,11 @@ LondonViceApp.linkClick = function(){
  console.log(url);
   // Get which template we need to render
   var tpl = $(this).data("template");
+  if ($(this).id == "homeLink") {
+    $("#leftPanel").hide();
+  } else {
+    $("#leftPanel").show();
+  }
   console.log(tpl);
   // If there is an href defined on the a link, then get the data
   // if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
@@ -149,7 +165,6 @@ LondonViceApp.formSubmit = function(){
   var tpl    = $(this).data("template");
   // This gets all the data from the form, you MUST have names on the inputs
   var data   = $(this).serialize();
-  console.log(data);
   return LondonViceApp.apiAjaxRequest(url, method, data, "home");
 }
 
@@ -159,6 +174,18 @@ LondonViceApp.addLinkClicks = function(){
   $("body").on("click", ".closeButton", function() {
     $("#popup").addClass("offscreen") 
   });
+  $("body").on("click", "#homeLink", function() {
+    $("#leftPanel").hide() 
+    $("#homeLink").hide() 
+  });
+  $("body").on("click", "#landing", function() {
+    $("#leftPanel").hide() 
+    $("#homeLink").show() 
+  });
+  $("body").on("click", "#homeLink", function(){
+    LondonViceApp.getTemplate("home",null, "/home", LondonViceApp.buildMap);
+    console.log("home clicked")
+  })
   $("body").on("click", "#logOut", LondonViceApp.logOut);
 }
 
