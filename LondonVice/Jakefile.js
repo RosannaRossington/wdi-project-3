@@ -26,11 +26,9 @@ function getCrimes(){
     return rp(url)
     .then(function(data) {
       var data = JSON.parse(data);
-      //console.log(data);
       var i = 0;
       data.forEach(function(crime){
         if (i % 500 === 0) {
-          console.log(crime);
           var outcomeStatus = crime.outcome_status || "";
           var newCrime = {
             category: crime.category,
@@ -54,7 +52,6 @@ function getCrimes(){
           Crime.create(newCrime, function(err, crime) {
             if (err) return console.log(err);
             return console.log(crime);
-            //console.log("Crime was added to the database");
           })
         }
         i++;

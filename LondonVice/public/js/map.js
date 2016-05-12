@@ -104,13 +104,32 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
     var markerLat = crime.location.latitude;
     var markerLng = crime.location.longitude;
     var statusCategory = crime.outcomeStatus ? crime.outcomeStatus.category : "Status unknown";
+    var setCrimeCategory; 
+    switch(crime.category) {
+      case "all-crime":             setCrimeCategory = "All crimes"; break;
+      case "anti-social-behaviour": setCrimeCategory = "Anti Social Behaviour"; break;
+      case "bicycle-theft":         setCrimeCategory = "Bicycle Theft"; break;
+      case "burglary":              setCrimeCategory = "Burglary"; break;
+      case "criminal-damage-arson": setCrimeCategory = "Criminal Damage/Arson"; break;
+      case "drugs":                 setCrimeCategory = "Drugs"; break;
+      case "other-theft":           setCrimeCategory = "Other theft"; break;
+      case "posession-of-weapons":  setCrimeCategory = "Posession Of Weapons"; break;
+      case "public-order":          setCrimeCategory = "Public Order"; break;
+      case "robbery":               setCrimeCategory = "Robbery"; break;
+      case "shop-lifting":          setCrimeCategory = "Shoplifting"; break;
+      case "theft-from-the-person": setCrimeCategory = "Theft from the person"; break;
+      case "vehicle-crime":         setCrimeCategory = "Vehicle Crime"; break;
+      case "violent-crime":         setCrimeCategory = "Violent Crime"; break;
+      case "other-crime":           setCrimeCategory = "Other crime"; break;
+    };
 
       $("#popup").removeClass("offscreen")
       $(".crimeTitle").children().remove();
       $(".streetView").children().remove();
-      $(".crimeTitle").append("<h4>"+crime.category+"</h4>");
-      $(".crimeTitle").append("<h4>"+crime.location.street.name+"</h4>");
-      $(".crimeTitle").append("<h4>"+statusCategory+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Crime type: </span>"+setCrimeCategory+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Location: </span>"+crime.location.street.name+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Status: </span>"+statusCategory+"</h4>");
+ 
       $(".streetView").append("<p>"+crime.locationType+"</p>");
 
     LondonViceApp.streetView(markerLat, markerLng)
@@ -155,7 +174,6 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
 
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-
   var setIcon; 
   switch(crime.category) {
     case "all-crime":             setIcon = "images/all-crime.png"; break;
@@ -221,6 +239,8 @@ LondonViceApp.getCrimes = function(){
 
 LondonViceApp.buildMap = function() {
   this.canvas = document.getElementById('map-canvas');
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
 
   var mapOptions = {
     zoom: 12,
@@ -233,12 +253,52 @@ LondonViceApp.buildMap = function() {
     };
  
 
+  $(".prisonDest").append("<select id='end'><option value='new google.maps.LatLng(51.49676350000001,0.09280100000000857)'>"+"Belmarsh"+"</option><option value='lat: (51.4519646, lng: -0.12471099999993385)'>"+"Brixton"+"</option><option value='feltham'>"+"Feltham"+"</option><option value='holloway'>"+"Holloway"+"</option><option value='isis'>"+"Isis Thamesmead"+"</option><option value='pentonville'>"+"Pentonville"+"</option><option value='thameside'>"+"Thameside"+"</option><option value='wandsworth'>"+"Wandsworth"+"</option><option value='winona, az'>"+"Wormwood Scrubs"+"</option></select>");
+
+    var onChangeHandler = function() {
+    LondonViceApp.calculateAndDisplayRoute(directionsService, directionsDisplay);
+    };
+  // document.getElementById('start').addEventListener('change', onChangeHandler);
+  document.getElementById('end').addEventListener('change', onChangeHandler);
+
   LondonViceApp.map = new google.maps.Map(this.canvas, mapOptions);
 
   LondonViceApp.getCrimes();
   LondonViceApp.createMarkerForPlace();
   LondonViceApp.showMarkers();
+
 }
+
+LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
+
+  var origin = new google.maps.LatLng(51.516023, -0.24048259999995025);
+  var destination = new google.maps.LatLng(51.4519646, -0.12471099999993385);
+
+  console.log(origin);
+  console.log(destination);
+
+  directionsService.route({
+    origin: origin,
+    destination: destination,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setMap(LondonViceApp.map);
+      directionsDisplay.setDirections(response);
+      console.log(response)
+    } else {
+      console.log('Directions request failed due to ' + status);
+    }
+  });
+}
+
+
+
+
+
+
+
+
 
 $(function(){
   if (LondonViceApp.checkLoggedIn()) {
