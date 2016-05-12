@@ -82,8 +82,10 @@ LondonViceApp.getUsers = function(){
 
 LondonViceApp.getTemplate = function(tpl, data, url, callback){
   LondonViceApp.headerDisplay();
-  if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register"))) tpl = "home";
+  if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+
+
 
   return $.ajax({
     url: templateUrl,
@@ -97,6 +99,19 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     // Replace the html inside main with the compiled template
     $("main").html(compiledTemplate);
     // Change the URL
+    
+    if (tpl == "landing") { 
+      $("body").has("#welcome").css({
+        "background-image" : "url(http://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png)",
+        "background-size" : "cover",
+        "background-repeat" : "no-repeat",
+        "background-position" : "center center",
+        "background-attachment" : "fixed"
+       }); 
+    } else { 
+      $("body").css("background-image", "none");
+    }
+
     if (callback) callback();
     
     // stateObj, title, url
@@ -121,6 +136,9 @@ LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
 }
 
 LondonViceApp.linkClick = function(){
+
+  console.log('clicked a link!')
+
   // If it has a data attribute of external, then it's an external link
   var external = $(this).data("external");
   console.log(external)
@@ -156,6 +174,10 @@ LondonViceApp.formSubmit = function(){
 LondonViceApp.addLinkClicks = function(){
   // Event delegation
   $("body").on("click", "a", this.linkClick);
+
+
+
+
   $("body").on("click", ".closeButton", function() {
     $("#popup").addClass("offscreen") 
   });
@@ -169,6 +191,10 @@ LondonViceApp.bindFormSubmits = function(){
 
 LondonViceApp.initialize = function(){
   this.headerDisplay();
+  this.getTemplate("landing", null, "/landing");
+
+
+
   // P - add events for header a links
   this.addLinkClicks();
 
