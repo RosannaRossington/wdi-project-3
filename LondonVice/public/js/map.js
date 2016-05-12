@@ -158,17 +158,12 @@ LondonViceApp.createMarkerForPlace = function(){
 
       position: latlng,
       map: self.map,
-      // animation: google.maps.Animation.DROP,
       icon: { 
         url: "images/prison.png",
-        // scaledSize: new google.maps.Size(50, 50),
-        // origin: new google.maps.Point(0,0),
-        // anchor: new google.maps.Point(0, 0)
       }
     });    
   }
 }
-
 
 LondonViceApp.createMarkerForCrime = function(crime) {
   var self    = this;
@@ -196,10 +191,6 @@ LondonViceApp.createMarkerForCrime = function(crime) {
 
   var crimeIcon = { 
     url:        setIcon,
-
-    // scaledSize: new google.maps.Size(0, 50),   // scaled size
-    // origin:     new google.maps.Point(0, 0),   // origin
-    // anchor:     new google.maps.Point(0, 0)   // anchor
   }
         
   var marker = new google.maps.Marker({
@@ -238,7 +229,7 @@ LondonViceApp.buildMap = function() {
     zoom: 12,
     center: new google.maps.LatLng(51.506178,-0.088369),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-  
+    styles:[{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#71ABC3"},{"saturation":-10},{"lightness":-21},{"visibility":"simplified"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"hue":"#7DC45C"},{"saturation":37},{"lightness":-41},{"visibility":"simplified"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#C3E0B0"},{"saturation":23},{"lightness":-12},{"visibility":"simplified"}]},{"featureType":"poi","elementType":"all","stylers":[{"hue":"#A19FA0"},{"saturation":-98},{"lightness":-20},{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"hue":"#FFFFFF"},{"saturation":-100},{"lightness":100},{"visibility":"simplified"}]}],  
     streetViewControl: false
     };
 
@@ -265,7 +256,6 @@ LondonViceApp.populatePrisonSelect = function() {
   document.getElementById('end').addEventListener('change', LondonViceApp.onChangeHandler);
 }
 
-
 LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
 
   var optionLatLng = document.getElementById("end").value;
@@ -287,18 +277,8 @@ LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsD
   });
 }
 
-
-
-
-
-
-
-
-
 $(function(){
   if (LondonViceApp.checkLoggedIn()) {
     LondonViceApp.getTemplate("home", null, "home", LondonViceApp.buildMap);
   }
 });
-
-
