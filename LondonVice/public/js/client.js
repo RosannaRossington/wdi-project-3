@@ -85,8 +85,6 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
   if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
   var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
 
-
-
   return $.ajax({
     url: templateUrl,
     method: "GET",
