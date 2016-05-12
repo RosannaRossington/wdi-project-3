@@ -130,14 +130,6 @@ li{
  list-style-type: none
  }
 
-
-
-/*.h1, h1 {
-  font-size: 22px;
-  color: black;
-  font-family: AlexBrush-Regular;
-}*/
-
 #popup.offscreen {
   right: -100%;
  }
@@ -206,6 +198,7 @@ li{
 
  .navbar-brand {
   font-family: pricedownbl;
+  font-size: 30px;
  }
 
  body,#forms{
@@ -270,3 +263,13 @@ main.container  {
   color: black;
   font-family: ArtelyInks;
 }
+
+
+#end {
+  width: 100%;
+}
+
+h4 {
+  font-weight: bold;
+}
+
