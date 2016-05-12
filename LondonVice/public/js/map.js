@@ -87,8 +87,11 @@ LondonViceApp.buildChart = function(){
       type: 'pie',
       borderWidth: null
     },
+    exporting: { 
+      enabled: false 
+    },
     title: {
-      text: 'Crimes Feb 2016'
+      text: null
     },
     tooltip: {
       pointFormat: '<b>{point.percentage:.1f}%</b>'
