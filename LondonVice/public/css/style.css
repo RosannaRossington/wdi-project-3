@@ -9,7 +9,7 @@ html, body {
 
 .navbar{
   z-index: 100;
-  background-color: #141C1F;
+  background-color: #443838;
   border-radius: 0px;
   border: none;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
@@ -19,6 +19,7 @@ html, body {
 
 .navbar a {
   color: white !important;
+  :pointer;
 }
 
 /* P - h1s have uneven margins without this...*/
@@ -43,30 +44,93 @@ h1 h2 h3 h4 h5 p {
    padding: 10px;
  }
 
- #all-crime {
-   color: red;
+ /*Checkbox*/
+
+#leftPanel,h1 {
+ color: white;
  }
+
+#all-crime {
+ color: #41942C;
+ }
+
+#anti-social-behaviour {
+   color: #8A2941
+ }
+
+#bicycle-theft {
+  color: #C04C00;
+}
+
+#burglary {
+    color: #D9C701;
+  }
+
+#criminal-damage-arson {
+    color: #C00005;
+  }
+
+#drugs {
+  color: #2C2F94;
+  }
+
+#other-theft {
+  color: #E7B102;
+  }
+
+#posession-of-weapons{
+ color: #563B67;
+ }
+
+#public-order {
+  color:#51AD59;
+}
+
+#robbery {
+  color:#E7D010;
+}
+
+#shop-lifting{
+  color:#E7D010;
+}
+
+#theft-from-the-person{ 
+  color:#E1DA02;
+}
+
+#vehicle-crime{ 
+  color:#C35B3B;
+}
+
+#violent-crime {
+  color:#51A4AD;
+}
+
+#other-crime {
+  color:#3A732E;
+}
 
 #leftPanel{
   position: fixed;
   top: 60px;
   left: 10px;
   z-index: 3;
-  background: #141C1F;
+  background: #443838;
   min-height: 45%;
   max-width: 15%;
   float: right;
   overflow: scroll;
   padding: 15px;
  /* border: 1px solid #3C4F6F;*/
-  text-align: center;
+  text-align: left;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
- li{
-  list-style-type: none
 }
-}
+
+li{
+ list-style-type: none
+ }
 
 .h1, h1 {
   font-size: 22px;
@@ -124,12 +188,8 @@ h1 h2 h3 h4 h5 p {
   color: red;
  }
 
-  #forms {
-  background-color: #141C1F;
-  }
 
  body,#forms{
-  background-color: #141C1F;
   font-size: 18px;
   color: #610200;
   -webkit-box-shadow: 11px 13px 44px -13px #2E2E2E;
@@ -147,17 +207,43 @@ h1 h2 h3 h4 h5 p {
   width: 400px;
  }
 
-  html,.landing-page,.full {
+ /* html,.landing-page,.full {
   /*    background: url('https://wallpaperscraft.com/image/london_england_uk_tower_bridge_thames_58120_1920x1080.jpg') no-repeat center center fixed;
      https://i.ytimg.com/vi/EehTldZe-Cs/maxresdefault.jpg*/
-     background: url(http://wallsquare.com/wp-content/uploads/2016/03/cities-cars-deviantart-city-lights-artwork-photo-manipulation-night-shot-picture-gallery.jpg) no-repeat center center fixed;
+    /* background: url(http://wallsquare.com/wp-content/uploads/2016/03/cities-cars-deviantart-city-lights-artwork-photo-manipulation-night-shot-picture-gallery.jpg) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       background-size: cover;
-      -o-background-size: cover;
+      -o-background-size: cover;*/
+  /*}*/
+
+  html,.landing-page, {
+    background-color: white;
   }
 
+/*body {
+  background-color: transparent;
+  height: 100vh;
+}*/
 
+main.container {
+  background-color: red;
+}
+
+#forms {
+  background-color: red;
+  height: 100vh;
+}
+
+#forms form {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navbar.navbar-default {
+  margin-bottom: 0;
+}
 
 
 
