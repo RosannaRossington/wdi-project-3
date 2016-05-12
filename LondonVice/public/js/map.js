@@ -5,12 +5,11 @@ LondonViceApp.map;
 LondonViceApp.categories = [];
 LondonViceApp.markers    = [];
 LondonViceApp.crimes     = [];
-LondonViceApp.radius     = 2000;
+LondonViceApp.radius     = 3000;
 LondonViceApp.activeCircle;
 LondonViceApp.activeCircleLat;
 LondonViceApp.activeCircleLng;
 LondonViceApp.nearbyCrimes = 0;
-
 
 // category of each crime LOAD THE CAT OF EACH CRIME INTO THE
 LondonViceApp.allCrime, LondonViceApp.antiSocialBehaviour   = 0;
@@ -45,27 +44,40 @@ LondonViceApp.categoriesForPie = {
   "bicycle-theft":        0        
 }
 
-// category grouping for pie chart USE THESE VARIABLES IN HIGH CHART PIE
-LondonViceApp.combineCategories = function() {
-  // LondonViceApp.allTheft            = LondonViceApp.bicycleTheft + LondonViceApp.burglary + LondonViceApp.otherTheft +                                  LondonViceApp.robbery + LondonViceApp.shopLifting +                                   LondonViceApp.theftFromThePerson;
-  // LondonViceApp.allViolence         = LondonViceApp.violentCrime;
-  // LondonViceApp.allAntisocial       = LondonViceApp.antiSocialBehaviour + LondonViceApp.publicOrder;
-  // LondonViceApp.allPosessionDrugs   = LondonViceApp.drugs;
-  // LondonViceApp.allPosessionWeapons = LondonViceApp.posessionOfWeapons;
-  // LondonViceApp.allPosession        = LondonViceApp.drugs + LondonViceApp.posessionOfWeapons;
-  // LondonViceApp.allDamage           = LondonViceApp.criminalDamageArson + LondonViceApp.vehicleCrime;
-  LondonViceApp.allTheft      = LondonViceApp.categoriesForPie["violent-crime"]
-  LondonViceApp.allViolence   = LondonViceApp.categoriesForPie["violent-crime"]
-  LondonViceApp.allAntisocial = LondonViceApp.categoriesForPie["anti-social-behaviour"] + LondonViceApp.categoriesForPie["public-order"]
-  LondonViceApp.
-  console.log(LondonViceApp.allAntisocial)
+LondonViceApp.resetPie = function() {
+  LondonViceApp.allTheft            = 0;                                          
+  LondonViceApp.allViolence         = 0;
+  LondonViceApp.allAntisocial       = 0;
+  LondonViceApp.allPosessionDrugs   = 0;
+  LondonViceApp.allPosessionWeapons = 0;
+  LondonViceApp.allPosession        = 0;
+  LondonViceApp.allDamage           = 0; 
+  LondonViceApp.buildChart(); 
 }
 
+// category grouping for pie chart USE THESE VARIABLES IN HIGH CHART PIE
+LondonViceApp.combineCategories = function() {
+  LondonViceApp.allTheft      = LondonViceApp.categoriesForPie["bicycle-theft"] + 
+                                LondonViceApp.categoriesForPie["burglary"] + 
+                                LondonViceApp.categoriesForPie["robbery"] + 
+                                LondonViceApp.categoriesForPie["shop-lifting"] +
+                                LondonViceApp.categoriesForPie["theft-from-the-person"];
+  LondonViceApp.allViolence   = LondonViceApp.categoriesForPie["violent-crime"];
+  LondonViceApp.allAntisocial = LondonViceApp.categoriesForPie["anti-social-behaviour"] + 
+                                LondonViceApp.categoriesForPie["public-order"];
+  LondonViceApp.allPosession  = LondonViceApp.categoriesForPie["drugs"] + 
+                                LondonViceApp.categoriesForPie["posession-of-weapons"];
+  LondonViceApp.allDamage     = LondonViceApp.categoriesForPie["criminal-damage-arson"] + 
+                                LondonViceApp.categoriesForPie["vehicle-crime"]
+}
 
-
-
-//build highchart
+// build highchart
 LondonViceApp.buildChart = function(){
+
+  Highcharts.setOptions({
+   colors: ['#C04C00', '#51A4AD', '#8A2941', '#2C2F94', '#563B67', '#C00005']
+  })
+
   $('#chartContainer').highcharts({
     chart: {
       backgroundColor: null,
@@ -79,7 +91,7 @@ LondonViceApp.buildChart = function(){
       text: 'Crimes Feb 2016'
     },
     tooltip: {
-      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      pointFormat: '<b>{point.percentage:.1f}%</b>'
     },
     plotOptions: {
       pie: {
@@ -88,10 +100,10 @@ LondonViceApp.buildChart = function(){
         borderWidth: 0,
         dataLabels: {
           enabled: false,
-          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+          format: '{point.percentage:.1f} %',
           style: {
             backgroundColor: null,
-            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+            // color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
           }
         }
       }
@@ -122,125 +134,14 @@ LondonViceApp.buildChart = function(){
       }]
     }]
   });
-}
-
-
-// $(function () {
-//     // Create the chart
-//     $('#container').highcharts({
-//       chart: {
-//         type: 'pie'
-//       },
-//       title: {
-//         text: 'Crimes'
-//       },
-//       subtitle: {
-//         text: 'Click the slices to view crime breakdown'
-//       },
-//       plotOptions: {
-//         series: {
-//           dataLabels: {
-//             enabled: false,
-//             format: '{point.name}: {point.y:.1f}%'
-//           }
-//         }
-//       },
-
-//       tooltip: {
-//         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-//         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-//       },
-//       series: [{
-//         name: 'Brands',
-//         colorByPoint: true,
-//         data: [{
-//           name: 'Theft',
-//           y: LondonViceApp.allTheft
-//         }, {
-//           name: 'Violence',
-//           y: LondonViceApp.allViolence,
-//           sliced: true,
-//           selected: true
-//         }, {
-//           name: 'Antisocial',
-//           y: LondonViceApp.allAntisocial
-//         }, {
-//           name: 'Posession',
-//           y: LondonViceApp.allPosession
-//         }, {
-//           name: 'Other',
-//           y: LondonViceApp.allDamage
-//         }]
-//       }],
-//       drilldown: {
-//         series: [{
-//           name: 'Theft',
-//           id: 'Theft',
-//           data: [
-//           ['Bike', LondonViceApp.bicycleTheft],
-//           ['Burglary', LondonViceApp.burglary],
-//           ['Other', LondonViceApp.otherTheft],
-//           ['Robbery', LondonViceApp.robbery],
-//           ['Shoplifting', LondonViceApp.shopLifting],
-//           ['Pickpocketing', LondonViceApp.theftFromThePerson]
-//           ]
-//         }, {
-//           name: 'Violence',
-//           id: 'Violence',
-//           data: [
-//           ['Violence', LondonViceApp.violentCrime]
-//           ]
-//         }, {
-//           name: 'Antisocial',
-//           id: 'Antisocial',
-//           data: [
-//           ['Antisocial Behaviour', LondonViceApp.antiSocialBehaviour ],
-//           ['Public Order', LondonViceApp.publicOrder]
-//           ]
-//           LondonViceApp.antiSocialBehaviour + LondonViceApp.publicOrder
-//         }, {
-//           name: 'Posession',
-//           id: 'Posession',
-//           data: [
-//           ['Drugs', LondonViceApp.drugs],
-//           ['Weapons', LondonViceApp.posessionOfWeapons]
-//           ]
-//         }, {
-//           name: 'Drugs',
-//           id: 'Drugs',
-//           data: [
-//           ['v12.x', 0.34],
-//           ['v28', 0.24],
-//           ['v27', 0.17],
-//           ['v29', 0.16]
-//           ]
-//         }], {
-//           name: 'Other',
-//           id: 'Other',
-//           data: [
-//           ['Arson', LondonViceApp.criminalDamageArson],
-//           ['Vehicle', LondonViceApp.vehicleCrime]
-//           ]
-//         }]
-//       }
-//     });
-//   });
 
 
 
 
-
-// do a loop on each of the markers passing in each marker as an argument
-// but we need the category of each crime
-// how do we link each marker to a crime? bindTo('center',marker, 'position')
-
-// need to loop through only filteredCrimes() otherwise the filter bit is not true!
-// but if we use the filter function the all crimes function is empty
-
-
+}     
 
 LondonViceApp.loopThroughFilteredCrimes = function(){
-  var arrayOfCrimes = LondonViceApp.filterCrimes(LondonViceApp.crimes);
+  var arrayOfCrimes = LondonViceApp.crimes;
   console.log(arrayOfCrimes);
   for (i = 0; i < arrayOfCrimes.length; i++){
    var crime = arrayOfCrimes[i];
@@ -253,16 +154,6 @@ LondonViceApp.loopThroughFilteredCrimes = function(){
  }
 }
 
-LondonViceApp.resetPie = function() {
-  LondonViceApp.allTheft            = 0;                                          
-  LondonViceApp.allViolence        = 0;
-  LondonViceApp.allAntisocial      = 0;
-  LondonViceApp.allPosessionDrugs  = 0;
-  LondonViceApp.allPosessionWeapons= 0;
-  LondonViceApp.allPosession       = 0;
-  LondonViceApp.allDamage          = 0;  
-}
-
 // this function will get the position of all of the ACTUAL CRIMES and log the category of the crime if the position is nearby
 LondonViceApp.findNearby = function(point, radius, center, crime){
   var localRadius = google.maps.geometry.spherical.computeDistanceBetween(point, center);
@@ -272,28 +163,18 @@ LondonViceApp.findNearby = function(point, radius, center, crime){
   }
 }
 
-  //   if (google.maps.geometry.spherical.computeDistanceBetween(crimeLatLng, LondonViceApp.activeCircle.getCenter()) <= LondonViceApp.activeCircle.getRadius()) {
-  //       console.log('=> is in searchArea');
-  //   } else {
-  //       console.log('=> is NOT in searchArea');
-  //   }
-  // }
-
-// the problem now seems to be that computeDistanceBetween needs the getPosition function rather than the crimeLatLng object
-// another solution could be to create a marker called activeMarker everytime the user clicks on a marker and then getPosition() of this?
-
-//every time a user clicks on a marker we need to remove any previously drawn circle
+//every time a user clicks on a marker remove any previously drawn circle
 LondonViceApp.removeCircle = function(circle){
   LondonViceApp.activeCircle = null
 }
 
-LondonViceApp.setMapOnAllCircle = function(map){
+LondonViceApp.setMapOnCircle = function(map){
   LondonViceApp.activeCircle.setMap(map);
 }
 
 // Removes the circle from the map, but keeps the .
 LondonViceApp.clearCircle = function() {
-  LondonViceApp.setMapOnAllCircle(null);
+  LondonViceApp.setMapOnCircle(null);
 }
 
 // Deletes the circle and removes from 
@@ -303,31 +184,7 @@ LondonViceApp.deleteCircles = function() {
   // LondonViceApp.markers = [];
 }
 
-// if the poly.containsLocation(marker.getPosition(), poly, 3?) console.log those markers as crimes?
-
-// (could also do a computeDistanceBetween() function on all of the markers)
-
-
-//before we get into that try getting all of the markers at a given point
-//called inside the build map function
-// LondonViceApp.initializeCircle = function(lat, lng, marker) {
-//   var map = LondonViceApp.map;
-
-//   var markerRadius = new google.maps.Circle({
-//     center: {lat: lat, lng: lng},
-//     map: map,
-//     radius: 1000, // set radius here
-//     fillColor: '#FF0000',
-//     fillOpacity: 0.15
-//   });
-
-  //add an event listener on all markers to remove make the var centerOfCirle = null
-
-  // google.maps.event.addListener(map, 'click', function(event) {
-  //   console.log(google.maps.geometry.poly.containsLocation(event.latLng ///this needs to the be the centre of each marker on a loop if true the marker needs to be console logged as a crime object///, centerOfLondon));
-  // });
-// }
-
+//**** END OF CIRCLE FUNCTIONS ****//
 
 // Sets the map on all markers in the array.
 LondonViceApp.setMapOnAll = function(map) {
