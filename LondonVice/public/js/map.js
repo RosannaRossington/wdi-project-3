@@ -126,7 +126,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       $("#popup").removeClass("offscreen")
       $(".crimeTitle").children().remove();
       $(".streetView").children().remove();
-      $(".crimeTitle").append("<h4><span id='popTitle'>Crime type: </span>"+setCrimeCategory+"</h4>");
+      $(".crimeTitle").append("<h4><span id='popTitle'>Crime Type: </span>"+setCrimeCategory+"</h4>");
       $(".crimeTitle").append("<h4><span id='popTitle'>Location: </span>"+crime.location.street.name+"</h4>");
       $(".crimeTitle").append("<h4><span id='popTitle'>Status: </span>"+statusCategory+"</h4>");
  
@@ -249,7 +249,7 @@ LondonViceApp.onChangeHandler = function() {
 }
 
 LondonViceApp.populatePrisonSelect = function() {
-  $(".prisonDest").append("<select id='end'></select>");
+  $(".prisonDest").append("<select class='form-control' id='end'></select>");
   $.each(LondonViceApp.prisons, function(index, prison) {
     $("select#end").append("<option value='"+index+"'>"+prison.name+"</option>");
   })

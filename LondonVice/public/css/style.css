@@ -204,6 +204,7 @@ li{
 
  .navbar-brand {
   font-family: pricedownbl;
+  font-size: 30px;
  }
 
  body,#forms{
@@ -272,3 +273,8 @@ main.container  {
   color: black;
   font-family: AlexBrush-Regular;
 }
+
+#end {
+  width: 100%;
+}
+
