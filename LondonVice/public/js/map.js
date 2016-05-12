@@ -270,6 +270,11 @@ LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsD
   }, function(response, status) {
     if (status === google.maps.DirectionsStatus.OK) {
       directionsDisplay.setMap(LondonViceApp.map);
+      directionsDisplay.setOptions({
+        polylineOptions: {
+          strokeColor: 'red'
+        }
+      });
       directionsDisplay.setDirections(response);
     } else {
       console.log('Directions request failed due to ' + status);
