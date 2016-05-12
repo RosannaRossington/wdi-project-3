@@ -139,12 +139,8 @@ LondonViceApp.createMarkerForPlace = function(){
 
       position: latlng,
       map: self.map,
-      // animation: google.maps.Animation.DROP,
       icon: { 
         url: "images/prison.png",
-        // scaledSize: new google.maps.Size(50, 50),
-        // origin: new google.maps.Point(0,0),
-        // anchor: new google.maps.Point(0, 0)
       }
     });    
   }
