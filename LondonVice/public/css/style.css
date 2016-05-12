@@ -180,6 +180,10 @@ li{
   right: 0px;
  }
 
+ #closebtn:hover{
+  opacity: 0.5;
+ }
+
  .streetView{
   min-width: 200px;
   min-height: 200px;
@@ -191,6 +195,18 @@ li{
   color: red;
  }
 
+ #popTitle{
+  color: #B5B5B5;
+ }
+
+ @font-face {
+     font-family: pricedownbl;
+     src: url(pricedownbl.ttf);
+ }
+
+ .navbar-brand {
+  font-family: pricedownbl;
+ }
 
  body,#forms{
   font-size: 18px;
@@ -223,10 +239,6 @@ li{
     height: 100vh;
   }
 
-/*body {
-  background-color: transparent;
-  height: 100vh;
-}*/
 
 main.container  {
   background-color: black;
@@ -258,3 +270,4 @@ main.container  {
   color: black;
   font-family: ArtelyInks;
 }
+
