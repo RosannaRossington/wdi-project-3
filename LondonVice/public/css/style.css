@@ -22,7 +22,7 @@ html, body {
 }
 
 /* P - h1s have uneven margins without this...*/
-h1 h2 h3 h4 h5 p {
+h1, h2, h3, h4, h5, p {
   margin: 0px 0px 5px 0px;
 }
 
@@ -45,8 +45,9 @@ h1 h2 h3 h4 h5 p {
 
  /*Checkbox*/
 
-#leftPanel,h1 {
+#leftPanel .h1 {
  color: white;
+ margin-top: 0px;
  }
 
 #all-crime {
@@ -112,8 +113,8 @@ h1 h2 h3 h4 h5 p {
 #leftPanel{
   position: fixed;
   top: 65px;
-  left: 10px;
-  z-index: 3;
+  left: 0px;
+  z-index: 103;
   background: white;
   border: solid black 8px;
   min-height: 45%;
@@ -122,6 +123,7 @@ h1 h2 h3 h4 h5 p {
   overflow: scroll;
   padding: 15px;
   text-align: left;
+  border-left: none;
   -webkit-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   -moz-box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
   box-shadow: 11px 13px 44px -13px rgba(0,0,0,0.75);
@@ -142,7 +144,7 @@ li{
   height: 100%;
   max-width: 30%;
   top: 65px;
-  right: 0;
+  right: -10px;
   background: white rgba(0,0,0,0.80);
   border: solid black 8px;
   color: black;
@@ -169,8 +171,6 @@ li{
  .closeButton{
   position: relative;
   float: right;
-  top: 10px;
-  right: 0px;
  }
 
  #closebtn:hover{
@@ -180,7 +180,6 @@ li{
  .streetView{
   min-width: 200px;
   min-height: 200px;
-
  }
 
  .show{
@@ -283,4 +282,13 @@ h4 {
   padding: 10px;
  }
 
+.col-sm-4.crimeInfoBox{
+  padding: 0;
+}
+.col-sm-8.crimeInfoBox{
+  padding: 0;
+}
 
+.row.crimeInfoBox {
+  margin: 0;
+}

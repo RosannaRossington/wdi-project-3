@@ -137,11 +137,8 @@ LondonViceApp.buildChart = function(){
       }]
     }]
   });
+} 
 
-
-
-
-}     
 
 LondonViceApp.loopThroughFilteredCrimes = function(){
   var arrayOfCrimes = LondonViceApp.crimes;
@@ -311,9 +308,11 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       $("#popup").removeClass("offscreen")
       $(".crimeTitle").children().remove();
       $(".streetView").children().remove();
-      $(".crimeTitle").append("<h4><span id='popTitle'>Crime Type: </span>"+setCrimeCategory+"</h4>");
-      $(".crimeTitle").append("<h4><span id='popTitle'>Location: </span>"+crime.location.street.name+"</h4>");
-      $(".crimeTitle").append("<h4><span id='popTitle'>Status: </span>"+statusCategory+"</h4>");
+      // $(".crimeTitle").append("<h4><span id='popTitle'>Crime Type: </span>"+setCrimeCategory+"</h4>");
+
+      $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Crime Type: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+setCrimeCategory+'</div></div>');
+      $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Location: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+crime.location.street.name+'</div></div>');
+      $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Status: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+statusCategory+'</div></div>');
     
       $(".streetView").append("<p>"+crime.locationType+"</p>");
 
