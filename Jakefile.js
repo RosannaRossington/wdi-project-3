@@ -51,10 +51,13 @@ function getCrimes(){
 
           Crime.create(newCrime, function(err, crime) {
             if (err) return console.log(err);
+            console.log("Crime created");
           })
         }
         i++;
       })
+
+      if (i === data.length) return process.exit();
     })
     .catch(function(err) {
       console.log("Something went wrong...", err)
