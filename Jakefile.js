@@ -3,7 +3,9 @@ var Crime    = require("./models/crime");
 var mongoose = require("mongoose");
 var config   = require("./config/config");
 
-mongoose.connect(config.database)
+mongoose.connect(config.database, function(){
+  console.log("Connected")
+})
 
 var urls = [
   "https://data.police.uk/api/crimes-street/all-crime?poly=51.68617954855625,-0.0487518310546875:51.68021937787971,0.1229095458984375:51.50788772102843,-0.1187896728515625&date=2016-02",
