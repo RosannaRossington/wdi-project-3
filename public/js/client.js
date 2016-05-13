@@ -217,7 +217,7 @@ LondonViceApp.bindFormSubmits = function(){
 
 LondonViceApp.setUrl = function() {
   if (window.location.href.indexOf("localhost") >= 0) return this.APP_URL = "localhost:3000";
-  return "https://london-vice.herokuapp.com";
+  return this.APP_URL = "https://london-vice.herokuapp.com";
 }
 
 LondonViceApp.initialize = function(){
