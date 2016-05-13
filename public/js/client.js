@@ -63,7 +63,7 @@ LondonViceApp.ajaxRequest = function(method, url, data, callback) {
 
   return $.ajax({
     method: method,
-    url: "http://localhost:3000/api" + url,
+    url: this.APP_URL + url,
     data: data,
     beforeSend: this.setRequestHeader
   }).done(function(data){
@@ -97,7 +97,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
   if (LondonViceApp.checkLoggedIn() && (tpl == "home")) tpl = "home";
 
   if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
-  var templateUrl = "http://localhost:3000/templates/" + tpl + ".html";
+  var templateUrl = LondonViceApp.APP_URL + "/templates/" + tpl + ".html";
 
   return $.ajax({
     url: templateUrl,
@@ -114,7 +114,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     
     if (tpl == "landing") { 
       $("body").has("#welcome").css({
-        "background-image" : "url(http://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png)",
+        "background-image" : "url(https://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png)",
         "background-size" : "cover",
         "background-repeat" : "no-repeat",
         "background-position" : "center center",
@@ -135,7 +135,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
 LondonViceApp.apiAjaxRequest = function(url, method, data, tpl){
   return $.ajax({
     type: method,
-    url: "http://localhost:3000/api"+ url,
+    url: LondonViceApp.APP_URL +"/api"+ url,
     data: data,
   }).done(function(data){
     LondonViceApp.saveTokenIfPresent(data);
@@ -215,10 +215,15 @@ LondonViceApp.bindFormSubmits = function(){
   $("body").on("submit", "form", this.formSubmit);
 }
 
+LondonViceApp.setUrl = function() {
+  if (window.location.href.indexOf("localhost") >= 0) return this.APP_URL = "localhost:3000";
+  return "https://london-vice.herokuapp.com";
+}
+
 LondonViceApp.initialize = function(){
+  this.setUrl();
   this.headerDisplay();
   this.getTemplate("landing", null, "/landing");
-
 
 
   // P - add events for header a links
