@@ -5,6 +5,7 @@ var config   = require("./config/config");
 
 mongoose.connect(config.database, function(){
   console.log("Connected")
+  console.log(config.database)
 })
 
 var urls = [
@@ -53,14 +54,14 @@ function getCrimes(){
           }
           var crime = new Crime(newCrime);
           crime.save(function(err, crime) {
-            
+
             if (err) return console.log(err);
             console.log("Crime created");
             i++;
             if (i === data.length) return process.exit();
           })
         }
-      }) 
+      })
     })
     .catch(function(err) {
       console.log("Something went wrong...", err)
