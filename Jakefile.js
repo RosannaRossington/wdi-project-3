@@ -50,8 +50,9 @@ function getCrimes(){
             location_subtype: crime.location_subtype,
             month: crime.month
           }
-          console.log(newCrime);
           Crime.create(newCrime, function(err, crime) {
+            console.log(crime);
+
             if (err) return console.log(err);
             console.log("Crime created");
           })
