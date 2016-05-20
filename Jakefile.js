@@ -24,6 +24,7 @@ var urls = [
 
 function getCrimes(){
   Crime.collection.drop();
+
   urls.forEach(function(url) {
     return rp(url)
     .then(function(data) {
@@ -50,17 +51,16 @@ function getCrimes(){
             location_subtype: crime.location_subtype,
             month: crime.month
           }
-          Crime.create(newCrime, function(err, crime) {
-            console.log(crime);
-
+          var crime = new Crime(newCrime);
+          crime.save(function(err, crime) {
+            
             if (err) return console.log(err);
             console.log("Crime created");
+            i++;
+            if (i === data.length) return process.exit();
           })
         }
-        i++;
-      })
-
-      if (i === data.length) return process.exit();
+      }) 
     })
     .catch(function(err) {
       console.log("Something went wrong...", err)
