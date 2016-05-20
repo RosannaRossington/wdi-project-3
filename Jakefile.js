@@ -5,6 +5,7 @@ var config   = require("./config/config");
 
 mongoose.connect(config.database, function(){
   console.log("Connected")
+  console.log(config.database);
 })
 
 var urls = [
