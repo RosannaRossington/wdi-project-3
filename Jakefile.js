@@ -28,7 +28,6 @@ function getCrimes(){
     return rp(url)
     .then(function(data) {
       var data = JSON.parse(data);
-      console.log(data);
       var i = 0;
       data.forEach(function(crime){
         if (i % 500 === 0) {
@@ -51,7 +50,7 @@ function getCrimes(){
             location_subtype: crime.location_subtype,
             month: crime.month
           }
-
+          console.log(newCrime);
           Crime.create(newCrime, function(err, crime) {
             if (err) return console.log(err);
             console.log("Crime created");
