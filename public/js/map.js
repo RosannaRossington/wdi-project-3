@@ -30,44 +30,44 @@ LondonViceApp.otherCrime            = 0;
 LondonViceApp.categoriesForPie = {
   "burglary":             0,
   "criminal-damage-arson":0,
-  "drugs":                0, 
+  "drugs":                0,
   "other-theft":          0,
-  "posession-of-weapons": 0, 
-  "public-order":         0, 
-  "robbery":              0, 
+  "posession-of-weapons": 0,
+  "public-order":         0,
+  "robbery":              0,
   "shop-lifting":         0,
   "theft-from-the-person":0,
   "vehicle-crime":        0,
   "violent-crime":        0,
   "other-crime":          0,
-  "anti-social-behaviour":0,         
-  "bicycle-theft":        0        
+  "anti-social-behaviour":0,
+  "bicycle-theft":        0
 }
 
 LondonViceApp.resetPie = function() {
-  LondonViceApp.allTheft            = 0;                                          
+  LondonViceApp.allTheft            = 0;
   LondonViceApp.allViolence         = 0;
   LondonViceApp.allAntisocial       = 0;
   LondonViceApp.allPosessionDrugs   = 0;
   LondonViceApp.allPosessionWeapons = 0;
   LondonViceApp.allPosession        = 0;
-  LondonViceApp.allDamage           = 0; 
-  LondonViceApp.buildChart(); 
+  LondonViceApp.allDamage           = 0;
+  LondonViceApp.buildChart();
 }
 
 // category grouping for pie chart USE THESE VARIABLES IN HIGH CHART PIE
 LondonViceApp.combineCategories = function() {
-  LondonViceApp.allTheft      = LondonViceApp.categoriesForPie["bicycle-theft"] + 
-                                LondonViceApp.categoriesForPie["burglary"] + 
-                                LondonViceApp.categoriesForPie["robbery"] + 
+  LondonViceApp.allTheft      = LondonViceApp.categoriesForPie["bicycle-theft"] +
+                                LondonViceApp.categoriesForPie["burglary"] +
+                                LondonViceApp.categoriesForPie["robbery"] +
                                 LondonViceApp.categoriesForPie["shop-lifting"] +
                                 LondonViceApp.categoriesForPie["theft-from-the-person"];
   LondonViceApp.allViolence   = LondonViceApp.categoriesForPie["violent-crime"];
-  LondonViceApp.allAntisocial = LondonViceApp.categoriesForPie["anti-social-behaviour"] + 
+  LondonViceApp.allAntisocial = LondonViceApp.categoriesForPie["anti-social-behaviour"] +
                                 LondonViceApp.categoriesForPie["public-order"];
-  LondonViceApp.allPosession  = LondonViceApp.categoriesForPie["drugs"] + 
+  LondonViceApp.allPosession  = LondonViceApp.categoriesForPie["drugs"] +
                                 LondonViceApp.categoriesForPie["posession-of-weapons"];
-  LondonViceApp.allDamage     = LondonViceApp.categoriesForPie["criminal-damage-arson"] + 
+  LondonViceApp.allDamage     = LondonViceApp.categoriesForPie["criminal-damage-arson"] +
                                 LondonViceApp.categoriesForPie["vehicle-crime"]
 }
 
@@ -87,8 +87,8 @@ LondonViceApp.buildChart = function(){
       type: 'pie',
       borderWidth: null
     },
-    exporting: { 
-      enabled: false 
+    exporting: {
+      enabled: false
     },
     title: {
       text: null
@@ -116,7 +116,7 @@ LondonViceApp.buildChart = function(){
       colorByPoint: true,
       data: [{
         name: 'Theft',
-        y: LondonViceApp.allTheft 
+        y: LondonViceApp.allTheft
       }, {
         name: 'Violence',
         y: LondonViceApp.allViolence,
@@ -137,7 +137,7 @@ LondonViceApp.buildChart = function(){
       }]
     }]
   });
-} 
+}
 
 
 LondonViceApp.loopThroughFilteredCrimes = function(){
@@ -176,7 +176,7 @@ LondonViceApp.clearCircle = function() {
   LondonViceApp.setMapOnCircle(null);
 }
 
-// Deletes the circle and removes from 
+// Deletes the circle and removes from
 LondonViceApp.deleteCircles = function() {
   LondonViceApp.clearCircle();
   LondonViceApp.removeCircle();
@@ -210,11 +210,11 @@ LondonViceApp.deleteMarkers = function() {
 
 LondonViceApp.setupFilters = function(){
   LondonViceApp.loopThroughCrimes(LondonViceApp.crimes);
-  
+
   $("input[type=checkbox]").on("change", function(){
     var category = $(this)[0].id;
 
-    if ($(this)[0].checked) { 
+    if ($(this)[0].checked) {
 
       // Ensuring that if the all-crime checkbox is clicked, then there should be no other checkboxes clicked. If the all-crime checkbox is already clicked and you click on another checkbox then the all-crime checkbox should become unchecked.
       if (category === "all-crime") {
@@ -258,7 +258,7 @@ LondonViceApp.streetView = function (markerLat, markerLng) {
       position: markerLocation,
       pov: {
         heading: 34,
-        pitch: 8         
+        pitch: 8
       },
       linksControl: false,
       panControl: false,
@@ -280,13 +280,13 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
   var self = this;
 
   google.maps.event.addListener(marker, 'click', function() {
-    var markerRadius;    
+    var markerRadius;
     var map            = LondonViceApp.map;
     var markerLat      = crime.location.latitude;
     var markerLng      = crime.location.longitude;
     var center         = new google.maps.LatLng(markerLat, markerLng)
     var statusCategory = crime.outcomeStatus ? crime.outcomeStatus.category : "Status unknown";
-    var setCrimeCategory; 
+    var setCrimeCategory;
     switch(crime.category) {
       case "all-crime":             setCrimeCategory = "All crimes"; break;
       case "anti-social-behaviour": setCrimeCategory = "Anti Social Behaviour"; break;
@@ -313,7 +313,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Crime Type: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+setCrimeCategory+'</div></div>');
       $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Location: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+crime.location.street.name+'</div></div>');
       $(".crimeTitle").append('<div class="row crimeInfoBox"><div class="col-sm-4 crimeInfoBox"><h4><span id="popTitle">Status: </span></h4></div><div class="col-sm-8 crimeInfoBox">'+statusCategory+'</div></div>');
-    
+
       $(".streetView").append("<p>"+crime.locationType+"</p>");
 
     LondonViceApp.streetView(markerLat, markerLng);
@@ -323,7 +323,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
 
     if (!!self.activeCircle) {self.deleteCircles();}
 
-    
+
     var markerRadius = new google.maps.Circle({
       center: {lat: markerLat, lng: markerLng},
       map: map,
@@ -334,7 +334,7 @@ LondonViceApp.addInfoForCrime = function(crime, marker){
       strokeOpacity: 1.0,
       strokeWeight: 0.4
     })
-    
+
     self.activeCircle    = markerRadius;
     self.activeCircleLat = markerLat;
     self.activeCircleLng = markerLng;
@@ -369,10 +369,10 @@ LondonViceApp.createMarkerForPlace = function(){
 
       position: latlng,
       map: self.map,
-      icon: { 
+      icon: {
         url: "images/prison.png",
       }
-    });    
+    });
   }
 }
 
@@ -381,7 +381,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
   var lat     = crime.location.latitude;
   var lng     = crime.location.longitude;
   var latlng  = new google.maps.LatLng(crime.location.latitude, crime.location.longitude);
-  var setIcon; 
+  var setIcon;
   switch(crime.category) {
     case "all-crime":             setIcon = "images/all-crime.png"; break;
     case "anti-social-behaviour": setIcon = "images/anti-social.png"; break;
@@ -401,7 +401,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
     default:                      setIcon = "images/all-crime.png";
   };
 
-  var crimeIcon = { 
+  var crimeIcon = {
     url:        setIcon,
   }
 
@@ -421,7 +421,7 @@ LondonViceApp.createMarkerForCrime = function(crime) {
 
 LondonViceApp.loopThroughCrimes = function(data){
   for (i = 0; i < data.length; i++){
-    var crime = data[i] 
+    var crime = data[i];
     LondonViceApp.createMarkerForCrime(crime);
   }
 };
@@ -429,10 +429,13 @@ LondonViceApp.loopThroughCrimes = function(data){
 LondonViceApp.getCrimes = function(){
   var self = this;
 
-  return LondonViceApp.ajaxRequest("get", "/crimes", null, function(data){
+  return LondonViceApp.ajaxRequest("get", "/api/crimes", null, function(data){
     LondonViceApp.crimes = data.crimes;
     return (function() {
       LondonViceApp.setupFilters();
+      LondonViceApp.createMarkerForPlace();
+      LondonViceApp.populatePrisonSelect();
+      LondonViceApp.showMarkers();
     })();
   })
 };
@@ -443,7 +446,7 @@ LondonViceApp.buildMap = function() {
     zoom: 12,
     center: new google.maps.LatLng(51.506178,-0.088369),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    styles:[{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#71ABC3"},{"saturation":-10},{"lightness":-21},{"visibility":"simplified"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"hue":"#7DC45C"},{"saturation":37},{"lightness":-41},{"visibility":"simplified"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#C3E0B0"},{"saturation":23},{"lightness":-12},{"visibility":"simplified"}]},{"featureType":"poi","elementType":"all","stylers":[{"hue":"#A19FA0"},{"saturation":-98},{"lightness":-20},{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"hue":"#FFFFFF"},{"saturation":-100},{"lightness":100},{"visibility":"simplified"}]}],  
+    styles:[{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#71ABC3"},{"saturation":-10},{"lightness":-21},{"visibility":"simplified"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"hue":"#7DC45C"},{"saturation":37},{"lightness":-41},{"visibility":"simplified"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#C3E0B0"},{"saturation":23},{"lightness":-12},{"visibility":"simplified"}]},{"featureType":"poi","elementType":"all","stylers":[{"hue":"#A19FA0"},{"saturation":-98},{"lightness":-20},{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"hue":"#FFFFFF"},{"saturation":-100},{"lightness":100},{"visibility":"simplified"}]}],
     streetViewControl: false
   };
 
@@ -451,9 +454,6 @@ LondonViceApp.buildMap = function() {
   LondonViceApp.directionsService = new google.maps.DirectionsService;
   LondonViceApp.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
   LondonViceApp.getCrimes();
-  LondonViceApp.createMarkerForPlace();
-  LondonViceApp.populatePrisonSelect();
-  LondonViceApp.showMarkers();
 }
 
 LondonViceApp.onChangeHandler = function() {
@@ -479,7 +479,7 @@ LondonViceApp.calculateAndDisplayRoute = function(directionsService, directionsD
   var prison = LondonViceApp.prisons[optionLatLng];
   var origin = new google.maps.LatLng(LondonViceApp.crimeOrigin[0], LondonViceApp.crimeOrigin[1]);
   var destination = new google.maps.LatLng(prison.lat, prison.lng);
-  
+
   directionsService.route({
     origin: origin,
     destination: destination,
@@ -504,4 +504,3 @@ $(function(){
     LondonViceApp.getTemplate("home", null, "home", LondonViceApp.buildMap);
   }
 });
-

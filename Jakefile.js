@@ -51,22 +51,20 @@ function getCrimes(){
             externalId: crime.id,
             location_subtype: crime.location_subtype,
             month: crime.month
-          }
+          };
           var crime = new Crime(newCrime);
           crime.save(function(err, crime) {
-
             if (err) return console.log(err);
-            console.log("Crime created");
-            i++;
-            if (i === data.length) return process.exit();
-          })
+            console.log(i);
+          });
         }
-      })
+        i++;
+      });
     })
     .catch(function(err) {
-      console.log("Something went wrong...", err)
+      console.log("Something went wrong...", err);
     });
-  })
+  });
 }
 
 task('default', getCrimes);

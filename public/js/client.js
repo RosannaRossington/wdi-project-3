@@ -20,7 +20,7 @@ LondonViceApp.headerDisplay = function(){
     $(".loggedIn").show();
   } else {
     $(".loggedOut").show();
-  
+
     $(".loggedIn").hide();
   }
 }
@@ -81,7 +81,7 @@ LondonViceApp.submitForm = function(){
   var method = $(this).attr('method');
   var url    = $(this).attr("action");
   var data   = $(this).serialize();
-  
+
   return LondonViceApp.ajaxRequest(method, url, data);
 }
 
@@ -93,7 +93,7 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
   console.log(tpl)
   LondonViceApp.headerDisplay();
   LondonViceApp.backToStreetsDisplay(tpl);
-  
+
   if (LondonViceApp.checkLoggedIn() && (tpl == "home")) tpl = "home";
 
   if (!LondonViceApp.checkLoggedIn() && (!(tpl == "login" || tpl == "register" || tpl == "landing"))) tpl = "home";
@@ -111,21 +111,21 @@ LondonViceApp.getTemplate = function(tpl, data, url, callback){
     // Replace the html inside main with the compiled template
     $("main").html(compiledTemplate);
     // Change the URL
-    
-    if (tpl == "landing") { 
+
+    if (tpl == "landing") {
       $("body").has("#welcome").css({
         "background-image" : "url(https://s1.thcdn.com/widgets/94-en/41/londongrandtheft1-051541.png)",
         "background-size" : "cover",
         "background-repeat" : "no-repeat",
         "background-position" : "center center",
         "background-attachment" : "fixed"
-       }); 
-    } else { 
+       });
+    } else {
       $("body").css("background-image", "none");
     }
 
     if (callback) callback();
-    
+
     // stateObj, title, url
     history.pushState(null, url, url)
   })
@@ -170,7 +170,7 @@ LondonViceApp.linkClick = function(){
   console.log(tpl);
   // If there is an href defined on the a link, then get the data
   // if (url) return LondonViceApp.apiAjaxRequest(url, "get", null, tpl);
-  // If there isn't a href, just load the template 
+  // If there isn't a href, just load the template
   return LondonViceApp.getTemplate(tpl, null, url);
 }
 
@@ -193,15 +193,15 @@ LondonViceApp.addLinkClicks = function(){
 
 
   $("body").on("click", ".closeButton", function() {
-    $("#popup").addClass("offscreen") 
+    $("#popup").addClass("offscreen")
   });
   $("body").on("click", "#homeLink", function() {
-    $("#leftPanel").hide() 
-    $("#homeLink").hide() 
+    $("#leftPanel").hide()
+    $("#homeLink").hide()
   });
   $("body").on("click", "#landing", function() {
-    $("#leftPanel").hide() 
-    $("#homeLink").show() 
+    $("#leftPanel").hide()
+    $("#homeLink").show()
   });
   $("body").on("click", "#homeLink", function(){
     LondonViceApp.getTemplate("home",null, "/home", LondonViceApp.buildMap);
@@ -216,7 +216,7 @@ LondonViceApp.bindFormSubmits = function(){
 }
 
 LondonViceApp.setUrl = function() {
-  if (window.location.href.indexOf("localhost") >= 0) return this.APP_URL = "localhost:3000";
+  if (window.location.href.indexOf("localhost") >= 0) return this.APP_URL = "http://localhost:3000";
   return this.APP_URL = "https://london-vice.herokuapp.com";
 }
 
@@ -240,4 +240,3 @@ LondonViceApp.initialize = function(){
 $(function(){
   LondonViceApp.initialize()
 })
-
